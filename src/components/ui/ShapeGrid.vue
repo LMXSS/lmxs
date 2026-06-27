@@ -302,6 +302,8 @@ function initCanvas() {
       for (let i = 0; i < trailCells.value.length; i++) {
         const t = trailCells.value[i];
 
+        if (!t) continue;
+
         const key = `${t.x},${t.y}`;
 
         if (!targets.has(key)) {
