@@ -1,32 +1,6 @@
 <script setup lang="ts">
-const testimonials = [
-  {
-    id: 1,
-    name: 'Caio Correia',
-    title: 'Scrum Master',
-    company: 'Target Work',
-    image: caioImage,
-    message: 'No meu tempo supervisionando o Gabriel, ele se mostrou uma pessoa capaz de assumir desenvolvimentos e projetos complexos para serem desenvolvidos, mesmo com o pouco tempo de experiência que ele tinha na área. Além disso, ele é extremamente comunicativo, o que tornava mais fácil transmitir as tarefas para ele de modo que entendesse exatamente o que estava sendo pedido.',
-  },
-  {
-    id: 2,
-    name: 'Michael Castro',
-    title: 'Gestor',
-    company: 'GlobalTera',
-    image: michaelImage,
-    message: 'Gabriel foi realmente um destaque no nosso time de suporte, entrou como JR mas chegou assumindo diversas responsabilidades. Sua dedicação incansável e habilidades excepcionais foram fundamentais para a eficiência da equipe. Além disso, sua atitude positiva e disposição para assumir responsabilidades adicionais fizeram dele um colega valioso. Sem dúvida, eu o recomendaria como uma adição incrível a qualquer time. Sua visão de trabalho em equipe e encorajamento nos profissionais mais novos ou com menos experiência sempre foi um diferencial, carismático e com uma comunicação indispensável. Tive o prazer e a honra de trabalhar com esse jovem que apesar da idade tem uma cabeça pensante incrível. .',
-  },
-  {
-    id: 3,
-    name: 'Allyson Alves',
-    title: 'Desenvolvedor FullStack',
-    company: 'Target Work',
-    image: allysonImage,
-    message: 'Gabriel é um excelente desenvolvedor .NET C# com quem tive a oportunidade de trabalhar. Sua habilidade técnica é impressionante, e sua abordagem prática para resolver desafios torna-o um membro valioso da equipe. O que diferencia Gabriel não é apenas seu conhecimento técnico, mas sua postura proativa em busca constante de aprendizado e crescimento profissional. Sua dedicação em expandir seu conhecimento contribui de forma notável para o sucesso do projetos, adicionando um toque inspirador ao ambiente de trabalho.',
-  },
-];
 import { onMounted, ref, onUnmounted } from 'vue';
-import AuroraBackground from './components/ui/AuroraBackground.vue';
+import ShapeGrid from './components/ui/ShapeGrid.vue';
 import {
   Carousel,
   CarouselContent,
@@ -36,33 +10,28 @@ import {
 } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button'; 
-import { Input } from '@/components/ui/input'; // Adicionado para o campo de assunto
-import { Textarea } from '@/components/ui/textarea'; // Adicionado para o corpo do email
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
-import caioImage from './assets/CaioCorreia.jpg'; 
+import caioImage from './assets/CaioCorreia.jpg';
 import michaelImage from './assets/MichaelCastro.png';
 import allysonImage from './assets/AllysonAlves.png';
-import myImageAvatar from './assets/myImage.jpg'
+import myImageAvatar from './assets/myImage.jpg';
 
-//Sobre Mim
+const myImage = myImageAvatar;
 const myName = 'Gabriel Lamas';
-const myTitle = 'FullStack Developer | Vue.js e C#/.NET';
+const myTitle = 'FullStack Developer · Vue.js & C#/.NET';
+const aboutMeText = `Desenvolvedor Full Stack com mais de 4 anos de experiência no desenvolvimento de sistemas utilizando C#, .NET, Vue.js e SQL Server.
 
-const myImage = myImageAvatar; 
+Iniciei minha trajetória na programação em 2018, durante minha formação técnica no NAVE, onde tive meu primeiro contato com desenvolvimento de software e com o ecossistema Microsoft. Desde então, venho atuando na construção e evolução de aplicações corporativas, APIs, integrações entre sistemas e soluções voltadas para ambientes de produção.
 
-const aboutMeText = `
-Olá! Sou Gabriel Lamas, um Desenvolvedor FullStack apaixonado por construir soluções eficientes e escaláveis. Minha jornada tem se concentrado na criação de interfaces dinâmicas usando Vue.js e na construção de APIs robustas com C# e o ecossistema .NET.
-Desde o início da minha carreira, busco sempre aprimorar minhas habilidades em arquitetura de software e boas práticas de codificação. Acredito que a comunicação transparente e a dedicação contínua são a chave para o sucesso de qualquer projeto de tecnologia.
-No meu tempo livre, adoro mergulhar em novas tecnologias e contribuir para a comunidade de desenvolvedores. Vamos construir algo incrível juntos!
-`;
+Atualmente trabalho com tecnologias como .NET, C#, Vue.js, Docker, RabbitMQ, SQL Server e Azure, além de aprofundar meus conhecimentos em arquitetura de software através da Pós-Graduação em Software Architecture da FIAP.
 
+Tenho grande interesse por arquitetura de sistemas, boas práticas de desenvolvimento, microsserviços e soluções escaláveis, buscando sempre entregar software de qualidade que gere valor para usuários e negócios.`;
 
-const isNavVisible = ref(true);
+const isNavVisible = ref(false);
 const auroraRef = ref(null);
-
 const activeSection = ref('sobre-mim');
-
 const emailSubject = ref('');
 const emailBody = ref('');
 const targetEmail = 'GLamas.dev@gmail.com';
@@ -73,25 +42,24 @@ const sendEmail = () => {
   window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
 };
 
-
-const sectionIds = [
-  'sobre-mim',
-  'habilidades',
-  'formacao',
-  'experiencia',
-  'recomendacoes',
-  'contato',
+const navSections = [
+  { id: 'sobre-mim', label: 'Sobre Mim' },
+  { id: 'habilidades', label: 'Habilidades' },
+  { id: 'formacao', label: 'Formação' },
+  { id: 'experiencia', label: 'Experiência' },
+  { id: 'recomendacoes', label: 'Recomendações' },
 ];
+
+const sectionIds = ['sobre-mim', 'habilidades', 'formacao', 'experiencia', 'recomendacoes', 'contato'];
 
 const handleScroll = () => {
   if (auroraRef.value) {
     const auroraHeight = (auroraRef.value as HTMLElement).offsetHeight;
-    isNavVisible.value = window.scrollY === 0 || window.scrollY < auroraHeight * 0.8;
+    isNavVisible.value = window.scrollY > auroraHeight * 0.4;
   } else {
-    isNavVisible.value = window.scrollY === 0;
+    isNavVisible.value = window.scrollY > 100;
   }
 
-  // Detectar seção ativa
   let currentSection: string = sectionIds[0] || '';
   for (const id of sectionIds) {
     const el = document.getElementById(id);
@@ -116,53 +84,69 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
-const skills = {
-  'Linguagens & Frameworks': [
-    { name: 'C#', devicon: 'csharp', color: 'text-purple-400' },
-    { name: 'Vue.js', devicon: 'vuejs', color: 'text-emerald-400' },
-    { name: '.NET', devicon: 'dotnet', color: 'text-blue-500' },
-    { name: 'JavaScript', devicon: 'javascript', color: 'text-yellow-400' },
-    { name: 'TypeScript', devicon: 'typescript', color: 'text-blue-400' },
-    { name: 'React', devicon: 'react', color: 'text-sky-400' },
-    { name: 'Python', devicon: 'python', color: 'text-yellow-600' },
-    { name: 'C', devicon: 'c', color: 'text-gray-500' },
-    { name: 'Ruby', devicon: 'ruby', color: 'text-red-500' },
-  ],
-  'Banco de Dados': [
-    { name: 'SQL Server', devicon: 'microsoftsqlserver', color: 'text-red-500' },
-    { name: 'PostgreSQL', devicon: 'postgresql', color: 'text-blue-600' },
-    { name: 'MongoDB', devicon: 'mongodb', color: 'text-green-500' },
-    { name: 'DynamoDB', devicon: 'amazonwebservices', color: 'text-orange-500' },
-  ],
-  'Cloud & DevOps': [
-    { name: 'Azure', devicon: 'azure', color: 'text-sky-500' },
-    { name: 'AWS', devicon: 'amazonwebservices', color: 'text-orange-400' },
-    { name: 'Docker', devicon: 'docker', color: 'text-blue-400' },
-    { name: 'Kubernetes', devicon: 'kubernetes', color: 'text-indigo-500' },
-    { name: 'Jenkins', devicon: 'jenkins', color: 'text-red-700' },
-    { name: 'Rancher', devicon: 'rancher', color: 'text-green-600' },
-    { name: 'RabbitMQ', devicon: 'rabbitmq', color: 'text-orange-600' },
-    { name: 'SignalR', devicon: 'dotnet', color: 'text-red-400' },
-  ],
+// Stack principal — destaque
+const mainStack = [
+  { name: '.NET', icon: 'devicon-dotnetcore-plain', theme: 'blue' },
+  { name: 'Angular', icon: 'devicon-angularjs-plain', theme: 'red' },
+];
+
+// Demais tecnologias — botões coloridos por categoria, tudo na mesma área
+const techStack = [
+  { name: 'React', icon: 'devicon-react-original', theme: 'sky' },
+  { name: 'Vue.js', icon: 'devicon-vuejs-plain', theme: 'emerald' },
+  { name: 'AWS', icon: 'devicon-amazonwebservices-plain-wordmark', theme: 'orange' },
+  { name: 'Azure', icon: 'devicon-azure-plain', theme: 'sky' },
+  { name: 'Grafana', icon: 'devicon-grafana-original', theme: 'amber' },
+  { name: 'RabbitMQ', icon: 'devicon-rabbitmq-original', theme: 'orange' },
+  { name: 'Apache Kafka', icon: 'devicon-apachekafka-original', theme: 'slate' },
+];
+
+// Classes de cor por tema (estáticas p/ o Tailwind detectar)
+const themeClasses: Record<string, string> = {
+  blue: 'border-blue-500/30 bg-blue-500/10 text-blue-300 hover:border-blue-500/60 hover:bg-blue-500/20 hover:shadow-blue-500/20',
+  red: 'border-red-500/30 bg-red-500/10 text-red-300 hover:border-red-500/60 hover:bg-red-500/20 hover:shadow-red-500/20',
+  sky: 'border-sky-500/30 bg-sky-500/10 text-sky-300 hover:border-sky-500/60 hover:bg-sky-500/20 hover:shadow-sky-500/20',
+  emerald: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:border-emerald-500/60 hover:bg-emerald-500/20 hover:shadow-emerald-500/20',
+  orange: 'border-orange-500/30 bg-orange-500/10 text-orange-300 hover:border-orange-500/60 hover:bg-orange-500/20 hover:shadow-orange-500/20',
+  amber: 'border-amber-500/30 bg-amber-500/10 text-amber-300 hover:border-amber-500/60 hover:bg-amber-500/20 hover:shadow-amber-500/20',
+  slate: 'border-slate-400/30 bg-slate-400/10 text-slate-200 hover:border-slate-400/60 hover:bg-slate-400/20 hover:shadow-slate-400/20',
 };
+
+// Princípios e práticas como pills
+const principles = [
+  'Domain-Driven Design (DDD)',
+  'Clean Architecture',
+  'SOLID',
+  'TDD / BDD',
+  'CQRS',
+  'Event-Driven Architecture',
+  'Clean Code',
+  'DRY',
+  'YAGNI',
+  'REST API',
+  'Gitflow',
+  'CI / CD',
+  'Versionamento Semântico',
+];
+
 const experiences = [
   {
     id: 1,
     role: 'Desenvolvedor Full Stack',
     company: 'TIPLAN',
-    companyLink: '#', // Substitua pelo link real depois
+    companyLink: 'https://www.tiplan.com.br/',
     type: 'Tempo integral',
-    duration: 'out de 2025 - o momento (1 mês)',
+    duration: 'out de 2025 — presente',
     location: 'Rio de Janeiro',
     isCurrent: true,
   },
   {
     id: 2,
-    role: 'Desenvolvedor Full Stack | .NET | C#',
+    role: 'Desenvolvedor Full Stack · .NET / C#',
     company: 'Target Work',
-    companyLink: '#',
+    companyLink: 'https://targetwork.com.br/',
     type: 'Terceirizado',
-    duration: 'jul de 2023 - out de 2025 (2 anos 4 meses)',
+    duration: 'jul de 2023 — out de 2025 · 2 anos 4 meses',
     location: 'Rio de Janeiro, Brasil · Remota',
     isCurrent: false,
   },
@@ -170,9 +154,9 @@ const experiences = [
     id: 3,
     role: 'Assistente de TI',
     company: 'GlobalTera',
-    companyLink: '#',
+    companyLink: 'https://globaltera.com.br/',
     type: 'Tempo integral',
-    duration: 'jan de 2023 - jul de 2023 (7 meses)',
+    duration: 'jan de 2023 — jul de 2023 · 7 meses',
     location: 'Barra da Tijuca, Rio de Janeiro · Presencial',
     isCurrent: false,
   },
@@ -180,9 +164,9 @@ const experiences = [
     id: 4,
     role: 'Analista de Qualidade e Suporte',
     company: 'Nuvor',
-    companyLink: '#',
+    companyLink: 'https://nuvor.com.br/',
     type: 'Temporário',
-    duration: 'mar de 2023 - mai de 2023 (3 meses)',
+    duration: 'mar de 2023 — mai de 2023 · 3 meses',
     location: 'Rio de Janeiro, Brasil',
     isCurrent: false,
   },
@@ -190,372 +174,514 @@ const experiences = [
 
 const educations = [
   {
-    id: 1,
-    course: 'C#',
-    type: 'Curso Profissionalizante',
-    institution: 'Udemy',
-    duration: '2022',
-    location: 'Online',
-  },
-  {
-    id: 2,
-    course: 'Arquitetura de Software',
+    id: 5,
+    course: 'Arquitetura de Sistemas .NET',
     type: 'MBA',
-    institution: 'PUC-Rio',
-    duration: '2024 - 2025',
+    institution: 'FIAP',
+    duration: '2026 — 2027',
     location: 'Rio de Janeiro',
-  },
-  {
-    id: 3,
-    course: 'Ensino Médio Técnico em Informática',
-    type: 'Ensino Médio Técnico',
-    institution: 'FAETEC',
-    duration: '2018 - 2020',
-    location: 'Rio de Janeiro',
+    upcoming: true,
   },
   {
     id: 4,
     course: 'Análise e Desenvolvimento de Sistemas',
-    type: 'Faculdade',
+    type: 'Graduação',
     institution: 'Estácio',
-    duration: '2021 - 2023',
+    duration: '2023 — 2025',
     location: 'Rio de Janeiro',
+    upcoming: false,
   },
   {
-    id: 5,
-    course: 'Vue.js Completo',
-    type: 'Curso Profissionalizante',
-    institution: 'Alura',
-    duration: '2023',
+    id: 3,
+    course: 'C# Avançado / Arquiteto .NET',
+    type: 'Formação Profissionalizante',
+    institution: 'COTI Informática',
+    duration: 'Fevereiro 2023',
     location: 'Online',
+    upcoming: false,
+  },
+  {
+    id: 2,
+    course: 'C# Web Developer Fullstack',
+    type: 'Formação Profissionalizante',
+    institution: 'COTI Informática',
+    duration: 'Fevereiro 2023',
+    location: 'Online',
+    upcoming: false,
+  },
+  {
+    id: 1,
+    course: 'Programação de Jogos Digitais',
+    type: 'Ensino Médio Técnico',
+    institution: 'NAVE',
+    duration: '2018 — 2020',
+    location: 'Rio de Janeiro',
+    upcoming: false,
   },
 ];
 
+const testimonials = [
+  {
+    id: 1,
+    name: 'Caio Correia',
+    title: 'Scrum Master',
+    company: 'Target Work',
+    image: caioImage,
+    linkedIn: 'https://www.linkedin.com/in/caiocesarcorreia/',
+    message: 'No meu tempo supervisionando o Gabriel, ele se mostrou uma pessoa capaz de assumir desenvolvimentos e projetos complexos para serem desenvolvidos, mesmo com o pouco tempo de experiência que ele tinha na área. Além disso, ele é extremamente comunicativo, o que tornava mais fácil transmitir as tarefas para ele de modo que entendesse exatamente o que estava sendo pedido.',
+  },
+  {
+    id: 2,
+    name: 'Michael Castro',
+    title: 'Gestor',
+    company: 'GlobalTera',
+    image: michaelImage,
+    linkedIn: 'https://www.linkedin.com/in/michael-castro-899847289/',
+    message: 'Gabriel foi realmente um destaque no nosso time de suporte, entrou como JR mas chegou assumindo diversas responsabilidades. Sua dedicação incansável e habilidades excepcionais foram fundamentais para a eficiência da equipe. Tive o prazer e a honra de trabalhar com esse jovem que apesar da idade tem uma cabeça pensante incrível.',
+  },
+  {
+    id: 3,
+    name: 'Allyson Alves',
+    title: 'Desenvolvedor FullStack',
+    company: 'Target Work',
+    image: allysonImage,
+    linkedIn: 'https://www.linkedin.com/in/allyson-alves/',
+    message: 'Gabriel é um excelente desenvolvedor .NET C# com quem tive a oportunidade de trabalhar. Sua habilidade técnica é impressionante, e sua abordagem prática para resolver desafios torna-o um membro valioso da equipe. O que diferencia Gabriel não é apenas seu conhecimento técnico, mas sua postura proativa em busca constante de aprendizado e crescimento profissional.',
+  },
+];
 </script>
 
 <template>
-  <nav 
-    :class="{ 
-      'transform translate-y-0 opacity-100': isNavVisible, 
-      'transform -translate-y-full opacity-0': !isNavVisible 
-    }"
-    class="fixed top-0 left-0 w-full z-[100] bg-transparent border-b-0 transition-all duration-300 ease-in-out"
+  <!-- ─── NAV ─────────────────────────────────────── -->
+  <nav
+    :class="isNavVisible
+      ? 'translate-y-0 opacity-100'
+      : '-translate-y-full opacity-0 pointer-events-none'"
+    class="fixed top-0 left-0 w-full z-[100] backdrop-blur-xl bg-black/50 border-b border-indigo-500/15 transition-all duration-500 ease-in-out"
   >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-center items-center h-16">
-        <div class="flex items-center space-x-2 sm:space-x-4">
-          <div class="hidden sm:flex sm:space-x-4">
-            <a href="#sobre-mim">
-              <Button
-                variant="ghost"
-                :class="[activeSection === 'sobre-mim' ? 'text-indigo-400 font-bold underline underline-offset-4' : 'text-white hover:text-indigo-400']"
-              >
-                Sobre mim
-              </Button>
-            </a>
-            <a href="#habilidades">
-              <Button
-                variant="ghost"
-                :class="[activeSection === 'habilidades' ? 'text-indigo-400 font-bold underline underline-offset-4' : 'text-white hover:text-indigo-400']"
-              >
-                Habilidades
-              </Button>
-            </a>
-            <a href="#formacao">
-              <Button
-                variant="ghost"
-                :class="[activeSection === 'formacao' ? 'text-indigo-400 font-bold underline underline-offset-4' : 'text-white hover:text-indigo-400']"
-              >
-                Formação
-              </Button>
-            </a>
-            <a href="#experiencia">
-              <Button
-                variant="ghost"
-                :class="[activeSection === 'experiencia' ? 'text-indigo-400 font-bold underline underline-offset-4' : 'text-white hover:text-indigo-400']"
-              >
-                Experiência
-              </Button>
-            </a>
-            <a href="#recomendacoes">
-              <Button
-                variant="ghost"
-                :class="[activeSection === 'recomendacoes' ? 'text-indigo-400 font-bold underline underline-offset-4' : 'text-white hover:text-indigo-400']"
-              >
-                Recomendações
-              </Button>
-            </a>
-          </div>
-          <div class="hidden sm:flex">
-            <a href="#contato">
-              <Button
-                variant="secondary"
-                :class="[activeSection === 'contato' ? 'ring-2 ring-indigo-400' : '']"
-              >
-                Currículo & Contato
-              </Button>
-            </a>
-          </div>
-        </div>
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#sobre-mim" class="dev-logo font-black text-xl tracking-tight select-none">
+        <span class="glyph-braces bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">&#123; &#125;</span>
+        <span class="glyph-tag bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">&lt;/&gt;</span>
+      </a>
+      <div class="hidden sm:flex items-center gap-1">
+        <a
+          v-for="s in navSections"
+          :key="s.id"
+          :href="`#${s.id}`"
+          :class="activeSection === s.id
+            ? 'text-indigo-400 bg-indigo-500/10'
+            : 'text-slate-400 hover:text-slate-100 hover:bg-white/5'"
+          class="px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200"
+        >
+          {{ s.label }}
+        </a>
+        <a href="#contato" class="ml-2">
+          <button class="px-4 py-1.5 text-sm font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors duration-200 shadow-lg shadow-indigo-500/20">
+            Contato
+          </button>
+        </a>
       </div>
     </div>
   </nav>
-  
-  <div class="min-h-screen"> 
-    
-    <AuroraBackground ref="auroraRef">
-      <h1 class="text-4xl md:text-7xl font-bold text-center text-white relative z-20">
-        Gabriel Lamas 
-      </h1>
-      <p class="font-extralight text-base md:text-4xl text-neutral-200 py-4 relative z-20">
-        FullStack Developer.
-      </p>
-    </AuroraBackground>
-    
 
-    <section id="sobre-mim" class="py-16 md:py-24 bg-card text-card-foreground">
-      <div class="max-w-4xl mx-auto px-6">
-        <div>
-          <h3 class="text-4xl font-extrabold mb-1 text-foreground">
-            {{ myName }}
-          </h3>
-          <p class="text-xl font-medium mb-6 text-muted-foreground">
-            {{ myTitle }}
-          </p>
-          <p class="text-lg leading-relaxed whitespace-pre-line text-card-foreground">
-            {{ aboutMeText }}
-          </p>
+  <div class="min-h-screen">
+
+    <!-- ─── HERO ──────────────────────────────────── -->
+    <section
+      ref="auroraRef"
+      class="relative flex h-screen flex-col items-center justify-center overflow-hidden bg-background"
+    >
+      <ShapeGrid
+        class="absolute inset-0 z-0"
+        shape="hexagon"
+        direction="diagonal"
+        :speed="0.5"
+        :square-size="40"
+        border-color="rgba(99, 102, 241, 0.22)"
+        hover-fill-color="rgba(129, 140, 248, 0.45)"
+        :hover-trail-amount="5"
+        fade-color="#05060f"
+      />
+      <div class="flex flex-col items-center text-center gap-5 relative z-20 px-6">
+        <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white leading-none">
+          Gabriel<br>
+          <span class="bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-300 bg-clip-text text-transparent">
+            Lamas
+          </span>
+        </h1>
+
+        <p class="text-base sm:text-xl text-slate-300 font-light max-w-md">
+          FullStack Developer · Vue.js &amp; C#/.NET
+        </p>
+
+        <div class="flex flex-wrap gap-3 justify-center mt-1">
+          <a href="https://github.com/LMXSS" target="_blank" rel="noopener noreferrer">
+            <button class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-lg shadow-indigo-500/30 flex items-center gap-2">
+              <i class="devicon-github-original text-base"></i>
+              Ver Projetos
+            </button>
+          </a>
+          <a href="#contato">
+            <button class="px-6 py-2.5 rounded-xl border border-white/20 hover:border-white/40 text-white font-semibold text-sm transition-all duration-200 hover:scale-105 bg-white/5 hover:bg-white/10">
+              Entrar em Contato
+            </button>
+          </a>
+        </div>
+
+        <div class="flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-medium mt-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Disponível para novos projetos
         </div>
       </div>
     </section>
 
-    <section id="habilidades" class="py-16 md:py-24 bg-muted/20 text-card-foreground">
+    <!-- ─── SOBRE MIM ──────────────────────────────── -->
+    <section id="sobre-mim" class="py-20 md:py-32 bg-background">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row gap-12 md:gap-16 items-center">
+
+          <div class="flex-shrink-0 flex flex-col items-center gap-5">
+            <div class="relative">
+              <div class="absolute -inset-[3px] rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-indigo-400 opacity-80 blur-[2px]"></div>
+              <div class="relative w-44 h-44 md:w-56 md:h-56 rounded-full p-[3px] bg-gradient-to-br from-indigo-500 via-violet-500 to-indigo-400">
+                <img :src="myImage" alt="Gabriel Lamas" class="w-full h-full rounded-full object-cover" />
+              </div>
+              <div class="absolute inset-0 rounded-full bg-indigo-500/15 blur-2xl -z-10 scale-125"></div>
+            </div>
+            <div class="flex gap-6 text-center">
+              <div>
+                <p class="text-2xl font-bold text-indigo-400">3+</p>
+                <p class="text-xs text-muted-foreground">Anos de exp.</p>
+              </div>
+              <div class="w-px bg-border"></div>
+              <div>
+                <p class="text-2xl font-bold text-indigo-400">15+</p>
+                <p class="text-xs text-muted-foreground">Tecnologias</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <p class="section-label mb-3">01 — Sobre Mim</p>
+            <h2 class="text-4xl md:text-5xl font-black mb-2 text-foreground leading-tight">{{ myName }}</h2>
+            <p class="text-lg text-indigo-400 font-medium mb-6">{{ myTitle }}</p>
+            <p class="text-muted-foreground leading-relaxed text-base whitespace-pre-line">{{ aboutMeText }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── HABILIDADES ────────────────────────────── -->
+    <section id="habilidades" class="py-20 md:py-32 bg-muted">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-12 text-center text-foreground">
-          Minhas Habilidades Técnicas
-        </h2>
-        <div class="space-y-12">
-          <div v-for="(categorySkills, categoryName) in skills" :key="categoryName">
-            <h3 class="text-2xl font-semibold mb-6 border-b border-primary/20 pb-2 text-foreground">
-              {{ categoryName }}
-            </h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-              <Card 
-                v-for="skill in categorySkills" 
-                :key="skill.name" 
-                class="hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 transform hover:scale-[1.05] cursor-pointer bg-card/70 border-primary/30"
-              >
-                <CardContent class="flex flex-col items-center justify-center p-4 h-full">
-                      <div class="flex flex-col items-center justify-center">
-                        <i
-                          :class="[
-                            'devicon-' + skill.devicon + '-plain',
-                            'text-4xl mb-2',
-                            skill.color
-                          ]"
-                        ></i>
-                        <span class="flex items-center gap-2 text-lg font-medium text-foreground text-center">
-                          <i
-                            :class="[
-                              'devicon-' + skill.devicon + '-plain',
-                              'text-xl',
-                              skill.color
-                            ]"
-                            style="margin-bottom: 0 !important;"
-                          ></i>
-                          {{ skill.name }}
-                        </span>
-                      </div>
-                </CardContent>
-              </Card>
-            </div>
+        <div class="text-center mb-16">
+          <p class="section-label mb-3">02 — Stack</p>
+          <h2 class="text-4xl font-black text-foreground">Habilidades Técnicas</h2>
+          <p class="text-muted-foreground mt-3 text-sm max-w-md mx-auto">
+            Foco em <span class="text-blue-300 font-semibold">.NET</span> e
+            <span class="text-red-300 font-semibold">Angular</span> — do back-end ao front-end.
+          </p>
+        </div>
+
+        <!-- Stack — botões coloridos por tecnologia, tudo na mesma área -->
+        <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-3">
+          <!-- Stack principal (destaque) -->
+          <button
+            v-for="tech in mainStack"
+            :key="tech.name"
+            type="button"
+            :class="[
+              'flex items-center gap-2.5 px-5 py-3 rounded-xl border font-bold text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-default',
+              themeClasses[tech.theme],
+            ]"
+          >
+            <i :class="[tech.icon, 'text-2xl']"></i>
+            <span>{{ tech.name }}</span>
+          </button>
+
+          <!-- Demais tecnologias -->
+          <button
+            v-for="tech in techStack"
+            :key="tech.name"
+            type="button"
+            :class="[
+              'flex items-center gap-2 px-4 py-2.5 rounded-xl border font-medium text-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-default',
+              themeClasses[tech.theme],
+            ]"
+          >
+            <i :class="[tech.icon, 'text-xl']"></i>
+            <span>{{ tech.name }}</span>
+          </button>
+        </div>
+
+        <!-- Princípios & Práticas -->
+        <div class="mt-14">
+          <div class="flex items-center gap-4 mb-6">
+            <span class="h-px flex-1 bg-border"></span>
+            <h3 class="text-xs font-semibold text-muted-foreground px-3 whitespace-nowrap tracking-wide uppercase">Arquitetura &amp; Práticas</h3>
+            <span class="h-px flex-1 bg-border"></span>
+          </div>
+          <div class="flex flex-wrap gap-2 justify-center">
+            <span
+              v-for="p in principles"
+              :key="p"
+              class="px-3 py-1.5 rounded-full text-xs font-medium border border-indigo-500/25 bg-indigo-500/8 text-indigo-300 hover:border-indigo-500/50 hover:bg-indigo-500/15 transition-all duration-200 cursor-default"
+            >
+              {{ p }}
+            </span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Formação -->
-    <section id="formacao" class="py-16 md:py-24 bg-muted/40 text-card-foreground">
-      <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-12 text-center text-foreground">Formação</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card v-for="edu in educations" :key="edu.id" class="hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 transform hover:scale-[1.03] cursor-pointer bg-card/70 border-primary/30">
-            <CardContent class="p-6">
-              <div class="mb-2">
-                <span class="text-xl font-bold text-foreground">{{ edu.course }}</span>
-                <span class="ml-2 text-sm text-primary/80 font-semibold">- {{ edu.type }}</span>
-              </div>
-              <div class="text-base text-muted-foreground mb-1">{{ edu.institution }}</div>
-              <div class="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                <span>{{ edu.duration }}</span>
-                <span>•</span>
-                <span>{{ edu.location }}</span>
-              </div>
-            </CardContent>
-          </Card>
+    <!-- ─── FORMAÇÃO ───────────────────────────────── -->
+    <section id="formacao" class="py-20 md:py-32 bg-background">
+      <div class="max-w-3xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="section-label mb-3">03 — Educação</p>
+          <h2 class="text-4xl font-black text-foreground">Formação</h2>
         </div>
-      </div>
-    </section>
 
-    <!-- Experiência -->
-    <section id="experiencia" class="py-16 md:py-24 bg-background text-card-foreground">
-      <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-12 text-center text-foreground">
-          Experiência Profissional
-        </h2>
+        <!-- Timeline vertical -->
         <div class="relative">
-          <div class="absolute inset-y-0 left-1/2 w-0.5 bg-primary/20 -translate-x-1/2 hidden md:block"></div>
-          <div v-for="(exp, index) in experiences" :key="exp.id" class="mb-10 flex">
-            <div class="w-full flex md:w-full">
-              <div
-                :class="[
-                  'w-full md:w-1/2',
-                  index % 2 === 0 ? 'md:pl-10 md:text-left md:justify-start' : 'md:pr-10 md:text-right md:justify-end',
-                  'flex relative'
-                ]"
-              >
-                <div
-                  :class="[
-                    'w-full opacity-0 [animation-fill-mode:forwards] transition-all duration-300',
-                    index % 2 === 0 ? 'animate-slide-in-left' : 'animate-slide-in-right'
-                  ]"
-                  :style="{ 'animation-delay': `${index * 0.2}s` }"
-                >
-                  <a :href="exp.companyLink" target="_blank" class="block focus:outline-none">
-                    <Card class="h-full shadow-xl hover:shadow-primary/50 border-primary/30 transition-all duration-300 hover:scale-[1.03] bg-card cursor-pointer">
-                      <CardContent class="p-6">
-                        <div class="mb-2">
-                          <span class="text-xl font-bold text-foreground">{{ exp.role }}</span>
-                        </div>
-                        <div class="flex items-center mb-1">
-                          <span class="text-lg font-semibold text-primary/80">{{ exp.company }}</span>
-                          <span class="ml-2 text-xs text-muted-foreground">{{ exp.duration }}</span>
-                        </div>
-                        <div class="text-sm text-muted-foreground mb-1">{{ exp.type }} - {{ exp.location }}</div>
-                        <div class="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                          <span>{{ exp.isCurrent ? 'Atual' : 'Antiga' }}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </a>
-                </div>
-                <div
-                  :class="[
-                    'absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full z-10 hidden md:block',
-                    index % 2 === 0 ? 'md:left-full md:transform md:-translate-x-1/2' : 'md:right-full md:transform md:translate-x-1/2'
-                  ]"
-                ></div>
+          <div class="absolute left-[5.5rem] top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/60 via-indigo-500/25 to-transparent hidden sm:block"></div>
+
+          <div
+            v-for="(edu, index) in educations"
+            :key="edu.id"
+            class="relative flex gap-6 pb-8 last:pb-0 opacity-0 animate-slide-in-up [animation-fill-mode:forwards]"
+            :style="{ animationDelay: `${index * 0.1}s` }"
+          >
+            <!-- Date label -->
+            <div class="hidden sm:flex flex-shrink-0 w-20 pt-5 justify-end">
+              <span class="text-xs font-mono text-muted-foreground text-right leading-tight">{{ edu.duration }}</span>
+            </div>
+
+            <!-- Dot -->
+            <div class="hidden sm:flex flex-shrink-0 items-start pt-[22px]">
+              <div :class="edu.upcoming ? 'bg-violet-500 border-violet-300 shadow-md shadow-violet-500/50' : 'bg-indigo-500 border-indigo-300'"
+                class="w-3 h-3 rounded-full border-2 z-10 -ml-1.5">
               </div>
-              <div v-if="index % 2 === 0" class="hidden md:block md:w-1/2"></div>
-              <div v-else class="hidden md:block md:w-1/2 order-first"></div>
+            </div>
+
+            <!-- Card -->
+            <div class="flex-1 group p-5 rounded-2xl border border-border bg-card hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/5">
+              <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    {{ edu.type }}
+                  </span>
+                  <span v-if="edu.upcoming" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">
+                    Em breve
+                  </span>
+                </div>
+                <!-- mobile date -->
+                <span class="sm:hidden text-xs font-mono text-muted-foreground">{{ edu.duration }}</span>
+              </div>
+              <h3 class="text-base font-bold text-foreground mb-1 group-hover:text-indigo-300 transition-colors leading-snug">
+                {{ edu.course }}
+              </h3>
+              <p class="text-sm text-muted-foreground">{{ edu.institution }} · {{ edu.location }}</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-  <!-- Recomendações -->
-  <section id="recomendacoes" class="p-8 md:p-16 bg-primary/10">
-      <h2 class="text-4xl font-bold mb-10 text-center text-foreground">
-        Recomendações
-      </h2>
-      <Carousel
-        :opts="{ align: 'center', loop: true }"
-        class="w-full max-w-4xl mx-auto"
-      >
-        <CarouselContent class="-ml-4 items-stretch">
-          <CarouselItem v-for="testimonial in testimonials" :key="testimonial.id" class="basis-4/5 pl-4 h-full">
-            <Card class="h-full shadow-2xl transition-all duration-300 hover:scale-[1.02]">
-              <CardContent class="flex flex-col p-6 h-full">
-                <div class="flex items-center space-x-4 mb-4">
-                  <Avatar class="h-16 w-16 md:h-20 md:w-20">
-                    <AvatarImage :src="testimonial.image" :alt="testimonial.name" />
-                    <AvatarFallback>{{ testimonial.name.charAt(0) }}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p class="text-xl font-semibold text-foreground">
-                      {{ testimonial.name }}
-                    </p>
-                    <p class="text-sm text-muted-foreground">
-                      {{ testimonial.title }} <span class="font-bold">- {{ testimonial.company }}</span>
-                    </p>
-                  </div>
+    <!-- ─── EXPERIÊNCIA ────────────────────────────── -->
+    <section id="experiencia" class="py-20 md:py-32 bg-muted">
+      <div class="max-w-3xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="section-label mb-3">04 — Carreira</p>
+          <h2 class="text-4xl font-black text-foreground">Experiência Profissional</h2>
+        </div>
+
+        <div class="relative">
+          <div class="absolute left-5 top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/70 via-indigo-500/30 to-transparent"></div>
+
+          <div
+            v-for="(exp, index) in experiences"
+            :key="exp.id"
+            class="relative pl-14 pb-8 last:pb-0 opacity-0 animate-slide-in-up [animation-fill-mode:forwards]"
+            :style="{ animationDelay: `${index * 0.12}s` }"
+          >
+            <div
+              :class="exp.isCurrent
+                ? 'bg-indigo-500 border-indigo-300 shadow-md shadow-indigo-500/60 scale-110'
+                : 'bg-card border-border'"
+              class="absolute left-[15px] top-5 w-4 h-4 rounded-full border-2 z-10"
+            ></div>
+
+            <a :href="exp.companyLink" target="_blank" rel="noopener noreferrer" class="block group">
+              <div class="p-5 rounded-2xl border border-border bg-card hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/5">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <h3 class="text-base font-bold text-foreground group-hover:text-indigo-300 transition-colors leading-snug">
+                    {{ exp.role }}
+                  </h3>
+                  <span
+                    v-if="exp.isCurrent"
+                    class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 font-semibold"
+                  >
+                    Atual
+                  </span>
                 </div>
-                <p class="text-card-foreground italic flex-grow text-base md:text-lg">
-                  "{{ testimonial.message }}"
-                </p>
-              </CardContent>
-            </Card>
-          </CarouselItem>
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-    </section>
-
-<!-- Seção vazia de formação removida -->
-
-
-    <section id="contato" class="py-16 md:py-24 bg-primary/20">
-      <h2 class="text-4xl font-bold mb-12 text-center text-foreground">
-        Currículo & Contato
-      </h2>
-      <div class="max-w-4xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row md:space-x-12">
-          
-          <div class="md:w-1/3 mb-10 md:mb-0 flex flex-col items-center md:items-start text-center md:text-left">
-            <h3 class="text-2xl font-semibold mb-4 text-foreground">
-              Documentos Importantes
-            </h3>
-            <p class="text-muted-foreground mb-6">
-              Baixe meu currículo completo ou acesse meu perfil profissional.
-            </p>
-            <a href="/src/assets/Gabriel%20Lamas%20-%20CV.pdf" download class="w-full md:w-auto">
-              <Button size="lg" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg">
-                <svg class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                  <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v7a1 1 0 11-2 0V3a1 1 0 011-1z" clip-rule="evenodd" />
-                </svg>
-                Baixar Currículo (PDF)
-              </Button>
-            </a>
-            
-            <a href="https://www.linkedin.com/in/gabriel-lamas-dev/" target="_blank" class="mt-4">
-              <Button variant="outline" class="w-full md:w-auto text-foreground border-foreground/50 hover:bg-background">
-                Ver Perfil do LinkedIn
-              </Button>
+                <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
+                  <span class="font-semibold text-indigo-400">{{ exp.company }}</span>
+                  <span class="text-border">·</span>
+                  <span class="text-muted-foreground">{{ exp.type }}</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    {{ exp.duration }}
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {{ exp.location }}
+                  </span>
+                </div>
+              </div>
             </a>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <Card class="md:w-2/3 flex-grow shadow-2xl">
-            <CardContent class="p-6">
-              <h3 class="text-2xl font-semibold mb-4 text-foreground">
-                Envie uma Mensagem Direta
-              </h3>
+    <!-- ─── RECOMENDAÇÕES ──────────────────────────── -->
+    <section id="recomendacoes" class="py-20 md:py-32 bg-background">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="section-label mb-3">05 — Depoimentos</p>
+          <h2 class="text-4xl font-black text-foreground">Recomendações</h2>
+        </div>
+
+        <Carousel :opts="{ align: 'center', loop: true }" class="w-full">
+          <CarouselContent class="-ml-4 items-stretch">
+            <CarouselItem
+              v-for="testimonial in testimonials"
+              :key="testimonial.id"
+              class="basis-full sm:basis-4/5 pl-4"
+            >
+              <a :href="testimonial.linkedIn" target="_blank" rel="noopener noreferrer" class="block h-full group">
+                <Card class="h-full border-border bg-card group-hover:border-indigo-500/40 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-xl group-hover:shadow-indigo-500/5">
+                  <CardContent class="flex flex-col p-7 h-full">
+                    <svg class="w-8 h-8 text-indigo-500/40 mb-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                    </svg>
+                    <p class="text-muted-foreground leading-relaxed text-sm md:text-base flex-grow mb-6 italic">
+                      "{{ testimonial.message }}"
+                    </p>
+                    <div class="flex items-center gap-4 pt-4 border-t border-border">
+                      <Avatar class="h-12 w-12 ring-2 ring-indigo-500/30">
+                        <AvatarImage :src="testimonial.image" :alt="testimonial.name" />
+                        <AvatarFallback class="bg-indigo-500/20 text-indigo-400 font-bold">
+                          {{ testimonial.name.charAt(0) }}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div class="flex-1 min-w-0">
+                        <p class="font-bold text-foreground text-sm group-hover:text-indigo-300 transition-colors">{{ testimonial.name }}</p>
+                        <p class="text-xs text-muted-foreground">
+                          {{ testimonial.title }}
+                          <span class="text-indigo-400 font-medium">· {{ testimonial.company }}</span>
+                        </p>
+                      </div>
+                      <i class="devicon-linkedin-plain text-blue-400 text-xl opacity-40 group-hover:opacity-100 transition-opacity flex-shrink-0"></i>
+                    </div>
+                  </CardContent>
+                </Card>
+              </a>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious class="border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
+          <CarouselNext class="border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
+        </Carousel>
+      </div>
+    </section>
+
+    <!-- ─── CONTATO ────────────────────────────────── -->
+    <section id="contato" class="py-20 md:py-32 bg-muted">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="section-label mb-3">06 — Contato</p>
+          <h2 class="text-4xl font-black text-foreground">Currículo &amp; Contato</h2>
+          <p class="text-muted-foreground mt-3 max-w-sm mx-auto text-sm">
+            Aberto a oportunidades, freelas e projetos interessantes.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+
+          <!-- Sidebar -->
+          <div class="md:col-span-2 flex flex-col gap-4">
+            <div class="p-5 rounded-2xl border border-border bg-card">
+              <h3 class="text-sm font-semibold text-foreground mb-4">Documentos &amp; Contatos</h3>
+              <div class="flex flex-col gap-3">
+                <a href="/src/assets/Gabriel%20Lamas%20-%20CV.pdf" download class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.02] shadow-lg shadow-indigo-500/20">
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  Baixar Currículo PDF
+                </a>
+                <a href="https://wa.me/5521964802568" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-600 hover:bg-green-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.02] shadow-lg shadow-green-500/20">
+                  <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                  </svg>
+                  WhatsApp
+                </a>
+                <a href="https://github.com/LMXSS" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.02] shadow-lg shadow-black/30">
+                  <i class="devicon-github-original text-lg flex-shrink-0"></i>
+                  GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/gabriel-lamas-dev/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-border hover:border-indigo-500/50 text-foreground text-sm font-medium transition-all duration-200 hover:scale-[1.02] hover:bg-indigo-500/5">
+                  <i class="devicon-linkedin-plain text-blue-400 text-lg flex-shrink-0"></i>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <Card class="md:col-span-3 border-border bg-card">
+            <CardContent class="p-7">
+              <h3 class="text-lg font-bold text-foreground mb-5">Enviar Mensagem Direta</h3>
               <form @submit.prevent="sendEmail" class="space-y-4">
-                <div>
-                  <label for="subject" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Assunto</label>
-                  <Input 
-                    id="subject" 
-                    v-model="emailSubject" 
-                    type="text" 
-                    placeholder="Ex: Proposta de Vaga FullStack" 
-                    required 
+                <div class="space-y-1.5">
+                  <label for="subject" class="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Assunto</label>
+                  <Input
+                    id="subject"
+                    v-model="emailSubject"
+                    type="text"
+                    placeholder="Ex: Proposta de Vaga FullStack"
+                    required
+                    class="bg-muted border-border focus:border-indigo-500/50 rounded-xl"
                   />
                 </div>
-                <div>
-                  <label for="body" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Corpo da Mensagem</label>
-                  <Textarea 
-                    id="body" 
-                    v-model="emailBody" 
-                    placeholder="Sua mensagem detalhada aqui..." 
-                    rows="6" 
-                    required 
+                <div class="space-y-1.5">
+                  <label for="body" class="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Mensagem</label>
+                  <Textarea
+                    id="body"
+                    v-model="emailBody"
+                    placeholder="Sua mensagem detalhada aqui..."
+                    rows="6"
+                    required
+                    class="bg-muted border-border focus:border-indigo-500/50 rounded-xl resize-none"
                   />
                 </div>
-                <Button type="submit" class="w-full">
-                  Enviar E-mail para GLamas.dev@gmail.com
-                </Button>
+                <button
+                  type="submit"
+                  class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.01] shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                  Entre em contato por E-mail
+                </button>
               </form>
             </CardContent>
           </Card>
@@ -563,20 +689,22 @@ const educations = [
       </div>
     </section>
   </div>
-  <footer class="w-full bg-background border-t border-primary/10 py-8 mt-12">
-    <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-      <span class="text-base text-muted-foreground">Desenvolvido por Gabriel Lamas</span>
-      <div class="flex gap-4 text-2xl">
-        <a href="https://github.com/LMXSS" target="_blank" aria-label="GitHub" class="hover:text-indigo-400 transition-colors">
+
+  <!-- ─── FOOTER ─────────────────────────────────── -->
+  <footer class="w-full bg-background border-t border-border py-8">
+    <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="dev-logo font-black text-lg">
+          <span class="glyph-braces bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">&#123; &#125;</span>
+          <span class="glyph-tag bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">&lt;/&gt;</span>
+        </span>
+        <span class="text-sm text-muted-foreground">Desenvolvido por Gabriel Lamas · {{ new Date().getFullYear() }}</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/LMXSS" target="_blank" class="text-muted-foreground hover:text-indigo-400 transition-colors text-xl">
           <i class="devicon-github-original"></i>
         </a>
-        <a href="https://twitter.com/gabriellamasdev" target="_blank" aria-label="Twitter/X" class="hover:text-indigo-400 transition-colors">
-          <i class="devicon-twitter-original"></i>
-        </a>
-        <a href="https://instagram.com/gabriellamas.dev" target="_blank" aria-label="Instagram" class="hover:text-indigo-400 transition-colors">
-          <i class="devicon-instagram-plain"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/gabriel-lamas-dev/" target="_blank" aria-label="LinkedIn" class="hover:text-indigo-400 transition-colors">
+        <a href="https://www.linkedin.com/in/gabriel-lamas-dev/" target="_blank" class="text-muted-foreground hover:text-indigo-400 transition-colors text-xl">
           <i class="devicon-linkedin-plain"></i>
         </a>
       </div>

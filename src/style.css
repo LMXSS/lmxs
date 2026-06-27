@@ -8,20 +8,20 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.56 0.22 276);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.58 0.20 300);
+  --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --radius: 0.625rem;
+  --ring: oklch(0.56 0.22 276);
+  --radius: 0.75rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -40,38 +40,38 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.07 0.028 272);
+  --foreground: oklch(0.92 0.012 222);
+  --card: oklch(0.11 0.028 272);
+  --card-foreground: oklch(0.92 0.012 222);
+  --popover: oklch(0.11 0.028 272);
+  --popover-foreground: oklch(0.92 0.012 222);
+  --primary: oklch(0.61 0.22 276);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.18 0.032 272);
+  --secondary-foreground: oklch(0.92 0.012 222);
+  --muted: oklch(0.14 0.026 272);
+  --muted-foreground: oklch(0.60 0.035 248);
+  --accent: oklch(0.57 0.19 300);
+  --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --border: oklch(0.20 0.042 272);
+  --input: oklch(0.17 0.030 272);
+  --ring: oklch(0.61 0.22 276);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --sidebar: oklch(0.11 0.028 272);
+  --sidebar-foreground: oklch(0.92 0.012 222);
+  --sidebar-primary: oklch(0.61 0.22 276);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.18 0.032 272);
+  --sidebar-accent-foreground: oklch(0.92 0.012 222);
+  --sidebar-border: oklch(0.20 0.042 272);
+  --sidebar-ring: oklch(0.61 0.22 276);
 }
 
 @theme inline {
@@ -125,6 +125,7 @@
 
 html {
   color-scheme: light dark;
+  scroll-behavior: smooth;
 }
 html.dark {
   color-scheme: dark;
@@ -133,28 +134,37 @@ html.light {
   color-scheme: light;
 }
 
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.07 0.028 272);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.30 0.08 272);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.50 0.15 276);
+}
+
 @theme inline {
-  --animate-aurora: aurora 60s linear infinite; 
+  --animate-aurora: aurora 60s linear infinite;
   @keyframes aurora {
     from {
-      background-position:
-        50% 50%,
-        50% 50%;
+      background-position: 50% 50%, 50% 50%;
     }
     to {
-      background-position:
-        350% 50%,
-        350% 50%;
+      background-position: 350% 50%, 350% 50%;
     }
   }
 }
-
-/* No seu arquivo CSS principal ou em tailwind.config.js */
 
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-100%);
+    transform: translateX(-60px);
   }
   to {
     opacity: 1;
@@ -162,26 +172,56 @@ html.light {
   }
 }
 
-@keyframes slideInRight {
+@keyframes slideInUp {
   from {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.8s ease-out forwards;
+  animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-slide-in-right {
-  animation: slideInRight 0.8s ease-out forwards;
+.animate-slide-in-up {
+  animation: slideInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Você pode adicionar um delay se quiser que eles entrem sequencialmente */
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-/* ...e assim por diante */
+.section-label {
+  font-family: ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: oklch(0.61 0.22 276);
+}
+
+/* Logo dev — alterna entre {} e </> */
+.dev-logo {
+  display: inline-grid;
+  font-family: ui-monospace, monospace;
+  line-height: 1;
+}
+.dev-logo > span {
+  grid-area: 1 / 1;
+  text-align: center;
+}
+.dev-logo .glyph-braces {
+  animation: devLogoBraces 4s ease-in-out infinite;
+}
+.dev-logo .glyph-tag {
+  animation: devLogoTag 4s ease-in-out infinite;
+}
+@keyframes devLogoBraces {
+  0%, 40% { opacity: 1; transform: translateY(0); }
+  50%, 90% { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes devLogoTag {
+  0%, 40% { opacity: 0; transform: translateY(4px); }
+  50%, 90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(4px); }
+}
