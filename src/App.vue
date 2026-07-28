@@ -622,7 +622,7 @@ const testimonials = [
             <div class="p-5 rounded-2xl border border-border bg-card">
               <h3 class="text-sm font-semibold text-foreground mb-4">Documentos &amp; Contatos</h3>
               <div class="flex flex-col gap-3">
-                <a href="/Gabriel%20Lamas%20-%20CV.pdf" download class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.02] shadow-lg shadow-indigo-500/20">
+                <a href="/Gabriel%20Lamas%20-%20CV.pdf" download="Gabriel Lamas - Curriculo.pdf" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.02] shadow-lg shadow-indigo-500/20">
                   <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                   </svg>
