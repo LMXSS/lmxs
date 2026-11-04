@@ -356,24 +356,23 @@ const studyProjects: Project[] = [
     videoUrl: null,
     accent: 'lime',
   },
+  {
+    id: 8,
+    phase: 'Web MVC',
+    label: 'COTI Informática · 2022',
+    title: 'Agenda de Contatos',
+    description:
+      'Aplicação ASP.NET MVC com contas de usuário, CRUD de contatos com foto, recuperação de senha por e-mail e relatórios em PDF e Excel. Um dos meus primeiros projetos completos em C#.',
+    thumbnail: '/projetos/agendacontatos.jpg',
+    tags: ['.NET 6', 'ASP.NET MVC', 'Dapper', 'SQL Server', 'iText', 'EPPlus'],
+    repoUrl: 'https://github.com/LMXSS/AgendaContatos',
+    videoUrl: null,
+    accent: 'purple',
+  },
 ];
 
-const projectGroups = [
-  {
-    id: 'tech-challenge',
-    title: 'Tech Challenge · Pós-Tech FIAP',
-    subtitle: 'FIAP Cloud Games, evoluída fase a fase: do monolito ao Kubernetes na Azure.',
-    grid: 'md:grid-cols-2',
-    items: techChallengeProjects,
-  },
-  {
-    id: 'estudos',
-    title: 'Estudos e ferramentas',
-    subtitle: 'Experimentos de performance, autenticação e utilitários criados no dia a dia.',
-    grid: 'md:grid-cols-2 lg:grid-cols-3',
-    items: studyProjects,
-  },
-];
+// Todos os projetos juntos, em ordem de exibição no carrossel
+const projects: Project[] = [...techChallengeProjects, ...studyProjects];
 
 // Cores de destaque por projeto (estáticas p/ o Tailwind detectar)
 const projectAccent: Record<string, { badge: string; hover: string }> = {
@@ -384,6 +383,7 @@ const projectAccent: Record<string, { badge: string; hover: string }> = {
   amber: { badge: 'bg-amber-400 text-zinc-950', hover: 'hover:border-amber-400/50 hover:shadow-amber-400/10' },
   rose: { badge: 'bg-rose-500/90 text-white', hover: 'hover:border-rose-500/50 hover:shadow-rose-500/10' },
   lime: { badge: 'bg-lime-400 text-zinc-950', hover: 'hover:border-lime-400/50 hover:shadow-lime-400/10' },
+  purple: { badge: 'bg-purple-400 text-zinc-950', hover: 'hover:border-purple-400/50 hover:shadow-purple-400/10' },
 };
 
 const testimonials = [
@@ -721,25 +721,27 @@ const testimonials = [
           <p class="section-label mb-3">05 — Projetos</p>
           <h2 class="text-4xl font-black text-foreground">Projetos</h2>
           <p class="text-muted-foreground mt-3 text-sm max-w-xl mx-auto">
-            Do Tech Challenge da
-            <a href="https://postech.fiap.com.br/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-4">Pós-Tech FIAP</a>
-            a estudos e ferramentas que uso no trabalho.
+            Arquitetura, microsserviços, cloud, performance e ferramentas em .NET.
           </p>
         </div>
 
-        <div class="flex flex-col gap-16">
-        <div v-for="group in projectGroups" :key="group.id">
-          <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-1 mb-6">
-            <h3 class="text-xl font-bold text-foreground">{{ group.title }}</h3>
-            <p class="text-sm text-muted-foreground">{{ group.subtitle }}</p>
+        <Carousel v-reveal :opts="{ align: 'start', loop: false }" class="w-full">
+          <div class="flex items-center justify-between gap-4 mb-5">
+            <p class="text-sm text-muted-foreground tabular-nums">{{ projects.length }} projetos</p>
+            <div class="flex items-center gap-2">
+              <CarouselPrevious class="static translate-y-0 translate-x-0 size-10 border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
+              <CarouselNext class="static translate-y-0 translate-x-0 size-10 border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
+            </div>
           </div>
 
-        <div :class="['grid grid-cols-1 gap-6', group.grid]">
+          <CarouselContent class="-ml-5 py-2 items-stretch">
+            <CarouselItem
+              v-for="project in projects"
+              :key="project.id"
+              class="pl-5 basis-[88%] sm:basis-1/2 lg:basis-1/3"
+            >
           <article
-            v-for="(project, index) in group.items"
-            :key="project.id"
-            v-reveal="index"
-            :class="['group flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl', projectAccent[project.accent]?.hover]"
+            :class="['group h-full flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl', projectAccent[project.accent]?.hover]"
           >
             <!-- Thumbnail -->
             <a
@@ -823,9 +825,9 @@ const testimonials = [
               </div>
             </div>
           </article>
-        </div>
-        </div>
-        </div>
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
       </div>
     </section>
 
@@ -874,8 +876,10 @@ const testimonials = [
               </a>
             </CarouselItem>
           </CarouselContent>
-          <CarouselPrevious class="border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
-          <CarouselNext class="border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
+          <div class="flex justify-center gap-2 mt-6">
+            <CarouselPrevious class="static translate-y-0 translate-x-0 size-10 border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
+            <CarouselNext class="static translate-y-0 translate-x-0 size-10 border-border bg-card hover:border-indigo-500/50 hover:bg-indigo-500/10 text-foreground" />
+          </div>
         </Carousel>
       </div>
     </section>
