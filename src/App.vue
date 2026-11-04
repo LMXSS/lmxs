@@ -560,9 +560,24 @@ const studyProjects: Project[] = [
   },
 ];
 
-// Todos os projetos juntos, em ordem de exibição no carrossel (Simone Lamas Studio Hair por último)
+const casteloProject: Project = {
+  id: 10,
+  phase: 'Landing page',
+  label: 'Cliente real · Angular',
+  title: 'Castelo das Frutas',
+  description:
+    'Landing page de um hortifrúti, com status de aberto agora calculado pelo horário de funcionamento, encarte de ofertas, vaga de emprego e informações de visita.',
+  thumbnail: '/projetos/castelo-das-frutas.jpg',
+  tags: ['Angular 22', 'Signals', 'SCSS', 'Vercel'],
+  repoUrl: 'https://github.com/LMXSS/castelo-das-frutas',
+  siteUrl: 'https://castelo-das-frutas.vercel.app/',
+  videoUrl: null,
+  accent: 'green',
+};
+
+// Todos os projetos juntos, em ordem de exibição no carrossel (landing pages de clientes no fim)
 const [studioProject, ...otherStudyProjects] = studyProjects;
-const projects: Project[] = [...techChallengeProjects, ...otherStudyProjects, studioProject!];
+const projects: Project[] = [...techChallengeProjects, ...otherStudyProjects, studioProject!, casteloProject];
 
 // Cores de destaque por projeto (estáticas p/ o Tailwind detectar)
 const projectAccent: Record<string, { badge: string; hover: string }> = {
@@ -573,6 +588,7 @@ const projectAccent: Record<string, { badge: string; hover: string }> = {
   amber: { badge: 'bg-amber-400 text-zinc-950', hover: 'hover:border-amber-400/50 hover:shadow-amber-400/10' },
   rose: { badge: 'bg-rose-500/90 text-white', hover: 'hover:border-rose-500/50 hover:shadow-rose-500/10' },
   lime: { badge: 'bg-lime-400 text-zinc-950', hover: 'hover:border-lime-400/50 hover:shadow-lime-400/10' },
+  green: { badge: 'bg-green-400 text-zinc-950', hover: 'hover:border-green-400/50 hover:shadow-green-400/10' },
   pink: { badge: 'bg-pink-300 text-zinc-950', hover: 'hover:border-pink-300/50 hover:shadow-pink-300/10' },
   purple: { badge: 'bg-purple-400 text-zinc-950', hover: 'hover:border-purple-400/50 hover:shadow-purple-400/10' },
 };
