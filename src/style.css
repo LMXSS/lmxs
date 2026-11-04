@@ -241,3 +241,14 @@ html.light {
   opacity: 1;
   transform: none;
 }
+
+/* Chips da stack principal: borda e fundo na cor da marca */
+.main-chip {
+  border-color: color-mix(in oklab, var(--brand) 35%, transparent);
+  background: color-mix(in oklab, var(--brand) 9%, transparent);
+}
+.main-chip:hover {
+  border-color: color-mix(in oklab, var(--brand) 70%, transparent);
+  background: color-mix(in oklab, var(--brand) 16%, transparent);
+  box-shadow: 0 10px 30px -10px color-mix(in oklab, var(--brand) 60%, transparent);
+}

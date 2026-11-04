@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, type Component } from 'vue';
+import {
+  Server, LayoutTemplate, Database, Workflow, Cloud, Activity,
+  Boxes, Waypoints, BadgeCheck, Rocket,
+  Zap, Layers, ShieldCheck, MessageSquare, Globe, CloudLightning, FlaskConical, Gauge,
+  Hexagon, Split, History, Radio, Repeat, Fingerprint, Building2,
+  Puzzle, Sparkles, Copy, Scissors, TestTube, MessageSquareText, Timer,
+  GitBranch, Tag, Container, TrendingUp, Network,
+} from 'lucide-vue-next';
 import ShapeGrid from './components/ui/ShapeGrid.vue';
 import {
   Carousel,
@@ -107,50 +115,216 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
-// Stack principal — destaque
-const mainStack = [
-  { name: '.NET', icon: 'devicon-dotnetcore-plain', theme: 'blue' },
-  { name: 'Angular', icon: 'devicon-angularjs-plain', theme: 'red' },
+// ─── Habilidades ──────────────────────────────────────────
+type Skill = { name: string; color: string; devicon?: string; lucide?: Component };
+
+// Stack principal — destaque no topo da seção
+const mainStack: Skill[] = [
+  { name: 'C#', devicon: 'devicon-csharp-plain', color: '#A179DC' },
+  { name: '.NET', devicon: 'devicon-dotnetcore-plain', color: '#8B6CF6' },
+  { name: 'Angular', devicon: 'devicon-angular-plain', color: '#F0476A' },
+  { name: 'Vue.js', devicon: 'devicon-vuejs-plain', color: '#42B883' },
+  { name: 'React', devicon: 'devicon-react-original', color: '#61DAFB' },
 ];
 
-// Demais tecnologias — botões coloridos por categoria, tudo na mesma área
-const techStack = [
-  { name: 'React', icon: 'devicon-react-original', theme: 'sky' },
-  { name: 'Vue.js', icon: 'devicon-vuejs-plain', theme: 'emerald' },
-  { name: 'AWS', icon: 'devicon-amazonwebservices-plain-wordmark', theme: 'orange' },
-  { name: 'Azure', icon: 'devicon-azure-plain', theme: 'sky' },
-  { name: 'Grafana', icon: 'devicon-grafana-original', theme: 'amber' },
-  { name: 'RabbitMQ', icon: 'devicon-rabbitmq-original', theme: 'orange' },
-  { name: 'Apache Kafka', icon: 'devicon-apachekafka-original', theme: 'slate' },
+type SkillGroup = { title: string; description: string; icon: Component; accent: string; items: Skill[] };
+
+const skillGroups: SkillGroup[] = [
+  {
+    title: 'Back-end',
+    description: 'APIs, aplicações MVC e acesso a dados no ecossistema .NET.',
+    icon: Server,
+    accent: 'violet',
+    items: [
+      { name: 'C#', devicon: 'devicon-csharp-plain', color: '#A179DC' },
+      { name: 'ASP.NET Core', devicon: 'devicon-dotnetcore-plain', color: '#8B6CF6' },
+      { name: 'Minimal APIs', lucide: Zap, color: '#FBBF24' },
+      { name: 'Blazor', devicon: 'devicon-blazor-original', color: '#A78BFA' },
+      { name: 'Entity Framework Core', devicon: 'devicon-entityframeworkcore-plain', color: '#A78BFA' },
+      { name: 'Dapper', lucide: Layers, color: '#F59E0B' },
+      { name: 'ASP.NET Identity', lucide: ShieldCheck, color: '#FB7185' },
+      { name: 'Swagger / OpenAPI', devicon: 'devicon-swagger-plain', color: '#85EA2D' },
+    ],
+  },
+  {
+    title: 'Front-end',
+    description: 'SPAs com os três grandes frameworks e interfaces responsivas.',
+    icon: LayoutTemplate,
+    accent: 'sky',
+    items: [
+      { name: 'Angular', devicon: 'devicon-angular-plain', color: '#F0476A' },
+      { name: 'Vue.js', devicon: 'devicon-vuejs-plain', color: '#42B883' },
+      { name: 'React', devicon: 'devicon-react-original', color: '#61DAFB' },
+      { name: 'TypeScript', devicon: 'devicon-typescript-plain', color: '#4F9CF9' },
+      { name: 'JavaScript', devicon: 'devicon-javascript-plain', color: '#F7DF1E' },
+      { name: 'Tailwind CSS', devicon: 'devicon-tailwindcss-original', color: '#38BDF8' },
+      { name: 'Bootstrap', devicon: 'devicon-bootstrap-plain', color: '#A37CF0' },
+    ],
+  },
+  {
+    title: 'Bancos de dados',
+    description: 'Relacional, documentos, cache e busca, cada um no seu papel.',
+    icon: Database,
+    accent: 'emerald',
+    items: [
+      { name: 'SQL Server', devicon: 'devicon-microsoftsqlserver-plain', color: '#F87171' },
+      { name: 'PostgreSQL', devicon: 'devicon-postgresql-plain', color: '#6FA8DC' },
+      { name: 'MongoDB', devicon: 'devicon-mongodb-plain', color: '#4DB33D' },
+      { name: 'Redis', devicon: 'devicon-redis-plain', color: '#F05A4F' },
+      { name: 'Elasticsearch', devicon: 'devicon-elasticsearch-plain', color: '#F9C74F' },
+      { name: 'DynamoDB', devicon: 'devicon-dynamodb-plain', color: '#5B8FF9' },
+      { name: 'SQLite', devicon: 'devicon-sqlite-plain', color: '#5AB0E6' },
+    ],
+  },
+  {
+    title: 'Mensageria & APIs',
+    description: 'Comunicação síncrona e por eventos entre serviços.',
+    icon: Workflow,
+    accent: 'orange',
+    items: [
+      { name: 'RabbitMQ', devicon: 'devicon-rabbitmq-original', color: '#FF7A1A' },
+      { name: 'MassTransit', lucide: MessageSquare, color: '#A78BFA' },
+      { name: 'Apache Kafka', devicon: 'devicon-apachekafka-original', color: '#E5E7EB' },
+      { name: 'Kong API Gateway', lucide: Waypoints, color: '#34D399' },
+      { name: 'REST', lucide: Globe, color: '#94A3B8' },
+      { name: 'GraphQL', devicon: 'devicon-graphql-plain', color: '#E535AB' },
+      { name: 'gRPC', devicon: 'devicon-grpc-plain', color: '#4FC3C7' },
+    ],
+  },
+  {
+    title: 'Cloud & DevOps',
+    description: 'Containers, orquestração e deploy automatizado na nuvem.',
+    icon: Cloud,
+    accent: 'blue',
+    items: [
+      { name: 'Azure (AKS · ACR)', devicon: 'devicon-azure-plain', color: '#3B9BFF' },
+      { name: 'Azure Functions', lucide: CloudLightning, color: '#FACC15' },
+      { name: 'AWS', devicon: 'devicon-amazonwebservices-plain', color: '#FF9900' },
+      { name: 'Docker', devicon: 'devicon-docker-plain', color: '#2496ED' },
+      { name: 'Kubernetes', devicon: 'devicon-kubernetes-plain', color: '#5B8CF0' },
+      { name: 'GitHub Actions', devicon: 'devicon-githubactions-plain', color: '#8BB4F7' },
+      { name: 'Azure DevOps', devicon: 'devicon-azuredevops-plain', color: '#3B9BFF' },
+      { name: 'Git', devicon: 'devicon-git-plain', color: '#F05033' },
+    ],
+  },
+  {
+    title: 'Observabilidade & Testes',
+    description: 'Medir, monitorar e garantir que o código faz o que promete.',
+    icon: Activity,
+    accent: 'amber',
+    items: [
+      { name: 'OpenTelemetry', devicon: 'devicon-opentelemetry-plain', color: '#F5A800' },
+      { name: 'Prometheus', devicon: 'devicon-prometheus-original', color: '#E6522C' },
+      { name: 'Grafana', devicon: 'devicon-grafana-plain', color: '#F46800' },
+      { name: 'New Relic', devicon: 'devicon-newrelic-plain', color: '#1CE783' },
+      { name: 'Datadog', devicon: 'devicon-datadog-original', color: '#A66FE0' },
+      { name: 'xUnit', lucide: FlaskConical, color: '#34D399' },
+      { name: 'BenchmarkDotNet', lucide: Gauge, color: '#F5A524' },
+    ],
+  },
 ];
 
-// Classes de cor por tema (estáticas p/ o Tailwind detectar)
-const themeClasses: Record<string, string> = {
-  blue: 'border-blue-500/30 bg-blue-500/10 text-blue-300 hover:border-blue-500/60 hover:bg-blue-500/20 hover:shadow-blue-500/20',
-  red: 'border-red-500/30 bg-red-500/10 text-red-300 hover:border-red-500/60 hover:bg-red-500/20 hover:shadow-red-500/20',
-  sky: 'border-sky-500/30 bg-sky-500/10 text-sky-300 hover:border-sky-500/60 hover:bg-sky-500/20 hover:shadow-sky-500/20',
-  emerald: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:border-emerald-500/60 hover:bg-emerald-500/20 hover:shadow-emerald-500/20',
-  orange: 'border-orange-500/30 bg-orange-500/10 text-orange-300 hover:border-orange-500/60 hover:bg-orange-500/20 hover:shadow-orange-500/20',
-  amber: 'border-amber-500/30 bg-amber-500/10 text-amber-300 hover:border-amber-500/60 hover:bg-amber-500/20 hover:shadow-amber-500/20',
-  slate: 'border-slate-400/30 bg-slate-400/10 text-slate-200 hover:border-slate-400/60 hover:bg-slate-400/20 hover:shadow-slate-400/20',
+type Practice = { name: string; icon: Component };
+type PracticeGroup = { title: string; description: string; icon: Component; accent: string; items: Practice[] };
+
+const practiceGroups: PracticeGroup[] = [
+  {
+    title: 'Arquitetura',
+    description: 'Como divido e organizo sistemas.',
+    icon: Boxes,
+    accent: 'violet',
+    items: [
+      { name: 'Microsserviços', icon: Boxes },
+      { name: 'Clean Architecture', icon: Layers },
+      { name: 'Arquitetura Hexagonal', icon: Hexagon },
+      { name: 'Domain-Driven Design', icon: Puzzle },
+      { name: 'CQRS', icon: Split },
+      { name: 'Event Sourcing', icon: History },
+      { name: 'Event-Driven', icon: Radio },
+      { name: 'Serverless', icon: CloudLightning },
+    ],
+  },
+  {
+    title: 'Integração & Resiliência',
+    description: 'Como os serviços conversam sem quebrar.',
+    icon: Network,
+    accent: 'orange',
+    items: [
+      { name: 'API Gateway', icon: Waypoints },
+      { name: 'Mensageria assíncrona', icon: MessageSquare },
+      { name: 'Idempotência', icon: Fingerprint },
+      { name: 'Retry', icon: Repeat },
+      { name: 'Multi-tenant', icon: Building2 },
+      { name: 'REST', icon: Globe },
+    ],
+  },
+  {
+    title: 'Qualidade de código',
+    description: 'Como mantenho o código legível e testado.',
+    icon: BadgeCheck,
+    accent: 'emerald',
+    items: [
+      { name: 'SOLID', icon: Puzzle },
+      { name: 'Clean Code', icon: Sparkles },
+      { name: 'DRY', icon: Copy },
+      { name: 'YAGNI', icon: Scissors },
+      { name: 'TDD', icon: TestTube },
+      { name: 'BDD', icon: MessageSquareText },
+      { name: 'Testes de carga', icon: Timer },
+    ],
+  },
+  {
+    title: 'Entrega',
+    description: 'Como o código chega em produção.',
+    icon: Rocket,
+    accent: 'sky',
+    items: [
+      { name: 'CI / CD', icon: Rocket },
+      { name: 'Gitflow', icon: GitBranch },
+      { name: 'Versionamento Semântico', icon: Tag },
+      { name: 'Containers', icon: Container },
+      { name: 'Autoscaling (HPA)', icon: TrendingUp },
+    ],
+  },
+];
+
+// Cores por grupo (estáticas p/ o Tailwind detectar)
+const groupAccent: Record<string, { box: string; card: string; pill: string }> = {
+  violet: {
+    box: 'bg-violet-500/15 text-violet-300 ring-1 ring-violet-500/30',
+    card: 'hover:border-violet-500/40 hover:shadow-violet-500/10',
+    pill: 'border-violet-500/25 bg-violet-500/10 text-violet-200 hover:border-violet-400/60 hover:bg-violet-500/20',
+  },
+  sky: {
+    box: 'bg-sky-500/15 text-sky-300 ring-1 ring-sky-500/30',
+    card: 'hover:border-sky-500/40 hover:shadow-sky-500/10',
+    pill: 'border-sky-500/25 bg-sky-500/10 text-sky-200 hover:border-sky-400/60 hover:bg-sky-500/20',
+  },
+  emerald: {
+    box: 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30',
+    card: 'hover:border-emerald-500/40 hover:shadow-emerald-500/10',
+    pill: 'border-emerald-500/25 bg-emerald-500/10 text-emerald-200 hover:border-emerald-400/60 hover:bg-emerald-500/20',
+  },
+  orange: {
+    box: 'bg-orange-500/15 text-orange-300 ring-1 ring-orange-500/30',
+    card: 'hover:border-orange-500/40 hover:shadow-orange-500/10',
+    pill: 'border-orange-500/25 bg-orange-500/10 text-orange-200 hover:border-orange-400/60 hover:bg-orange-500/20',
+  },
+  blue: {
+    box: 'bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30',
+    card: 'hover:border-blue-500/40 hover:shadow-blue-500/10',
+    pill: 'border-blue-500/25 bg-blue-500/10 text-blue-200 hover:border-blue-400/60 hover:bg-blue-500/20',
+  },
+  amber: {
+    box: 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/30',
+    card: 'hover:border-amber-500/40 hover:shadow-amber-500/10',
+    pill: 'border-amber-500/25 bg-amber-500/10 text-amber-200 hover:border-amber-400/60 hover:bg-amber-500/20',
+  },
 };
 
-// Princípios e práticas como pills
-const principles = [
-  'Domain-Driven Design (DDD)',
-  'Clean Architecture',
-  'SOLID',
-  'TDD / BDD',
-  'CQRS',
-  'Event-Driven Architecture',
-  'Clean Code',
-  'DRY',
-  'YAGNI',
-  'REST API',
-  'Gitflow',
-  'CI / CD',
-  'Versionamento Semântico',
-];
+// Contagem real de tecnologias para o destaque do "Sobre mim"
+const techCount = new Set(skillGroups.flatMap((g) => g.items.map((i) => i.name))).size;
+const techCountLabel = `${Math.floor(techCount / 5) * 5}+`;
 
 const experiences = [
   {
@@ -522,7 +696,7 @@ const testimonials = [
               </div>
               <div class="w-px bg-border"></div>
               <div>
-                <p class="text-2xl font-bold text-indigo-400">15+</p>
+                <p class="text-2xl font-bold text-indigo-400">{{ techCountLabel }}</p>
                 <p class="text-xs text-muted-foreground">Tecnologias</p>
               </div>
             </div>
@@ -541,61 +715,93 @@ const testimonials = [
     <!-- ─── HABILIDADES ────────────────────────────── -->
     <section id="habilidades" class="py-20 md:py-32 bg-muted">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-16">
+        <div class="text-center mb-12">
           <p class="section-label mb-3">02 — Stack</p>
           <h2 class="text-4xl font-black text-foreground">Habilidades Técnicas</h2>
-          <p class="text-muted-foreground mt-3 text-sm max-w-md mx-auto">
-            Foco em <span class="text-blue-300 font-semibold">.NET</span> e
-            <span class="text-red-300 font-semibold">Angular</span> — do back-end ao front-end.
+          <p class="text-muted-foreground mt-3 text-sm max-w-lg mx-auto leading-relaxed">
+            Back-end em <span class="text-violet-300 font-semibold">.NET</span> e front-end com
+            <span class="text-rose-300 font-semibold">Angular</span>,
+            <span class="text-emerald-300 font-semibold">Vue</span> e
+            <span class="text-sky-300 font-semibold">React</span>, da arquitetura ao deploy na nuvem.
           </p>
         </div>
 
-        <!-- Stack — botões coloridos por tecnologia, tudo na mesma área -->
-        <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-3">
-          <!-- Stack principal (destaque) -->
-          <button
+        <!-- Stack principal -->
+        <div v-reveal class="flex flex-wrap items-center justify-center gap-3 mb-14">
+          <span
             v-for="tech in mainStack"
             :key="tech.name"
-            type="button"
-            :class="[
-              'flex items-center gap-2.5 px-5 py-3 rounded-xl border font-bold text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-default',
-              themeClasses[tech.theme],
-            ]"
+            class="main-chip flex items-center gap-2.5 px-5 py-3 rounded-xl border font-bold text-base text-foreground transition-all duration-300 hover:-translate-y-1 cursor-default"
+            :style="{ '--brand': tech.color }"
           >
-            <i :class="[tech.icon, 'text-2xl']"></i>
-            <span>{{ tech.name }}</span>
-          </button>
-
-          <!-- Demais tecnologias -->
-          <button
-            v-for="tech in techStack"
-            :key="tech.name"
-            type="button"
-            :class="[
-              'flex items-center gap-2 px-4 py-2.5 rounded-xl border font-medium text-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-default',
-              themeClasses[tech.theme],
-            ]"
-          >
-            <i :class="[tech.icon, 'text-xl']"></i>
-            <span>{{ tech.name }}</span>
-          </button>
+            <i :class="[tech.devicon, 'text-2xl']" :style="{ color: tech.color }"></i>
+            {{ tech.name }}
+          </span>
         </div>
 
-        <!-- Princípios & Práticas -->
-        <div class="mt-14">
-          <div class="flex items-center gap-4 mb-6">
-            <span class="h-px flex-1 bg-border"></span>
-            <h3 class="text-xs font-semibold text-muted-foreground px-3 whitespace-nowrap tracking-wide uppercase">Arquitetura &amp; Práticas</h3>
-            <span class="h-px flex-1 bg-border"></span>
+        <!-- Tecnologias por área -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <article
+            v-for="(group, index) in skillGroups"
+            :key="group.title"
+            v-reveal="index"
+            :class="['flex flex-col p-6 rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-xl', groupAccent[group.accent]?.card]"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <span :class="['flex items-center justify-center w-10 h-10 rounded-xl flex-shrink-0', groupAccent[group.accent]?.box]">
+                <component :is="group.icon" class="w-5 h-5" aria-hidden="true" />
+              </span>
+              <h3 class="text-lg font-bold text-foreground">{{ group.title }}</h3>
+            </div>
+            <p class="text-sm text-muted-foreground leading-relaxed mb-5">{{ group.description }}</p>
+            <ul class="flex flex-wrap gap-2">
+              <li
+                v-for="item in group.items"
+                :key="item.name"
+                class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/60 text-sm font-medium text-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20"
+              >
+                <i v-if="item.devicon" :class="[item.devicon, 'text-base leading-none']" :style="{ color: item.color }" aria-hidden="true"></i>
+                <component :is="item.lucide" v-else class="w-4 h-4" :style="{ color: item.color }" aria-hidden="true" />
+                {{ item.name }}
+              </li>
+            </ul>
+          </article>
+        </div>
+
+        <!-- Arquitetura & Práticas -->
+        <div class="mt-20">
+          <div class="text-center mb-10">
+            <h3 class="text-2xl font-black text-foreground">Arquitetura &amp; Práticas</h3>
+            <p class="text-sm text-muted-foreground mt-2">Os princípios por trás do código.</p>
           </div>
-          <div class="flex flex-wrap gap-2 justify-center">
-            <span
-              v-for="p in principles"
-              :key="p"
-              class="px-3 py-1.5 rounded-full text-xs font-medium border border-indigo-500/25 bg-indigo-500/8 text-indigo-300 hover:border-indigo-500/50 hover:bg-indigo-500/15 transition-all duration-200 cursor-default"
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <article
+              v-for="(group, index) in practiceGroups"
+              :key="group.title"
+              v-reveal="index"
+              :class="['p-6 rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-xl', groupAccent[group.accent]?.card]"
             >
-              {{ p }}
-            </span>
+              <div class="flex items-center gap-3 mb-5">
+                <span :class="['flex items-center justify-center w-10 h-10 rounded-xl flex-shrink-0', groupAccent[group.accent]?.box]">
+                  <component :is="group.icon" class="w-5 h-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h4 class="text-base font-bold text-foreground leading-tight">{{ group.title }}</h4>
+                  <p class="text-xs text-muted-foreground mt-0.5">{{ group.description }}</p>
+                </div>
+              </div>
+              <ul class="flex flex-wrap gap-2">
+                <li
+                  v-for="item in group.items"
+                  :key="item.name"
+                  :class="['flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-200 cursor-default', groupAccent[group.accent]?.pill]"
+                >
+                  <component :is="item.icon" class="w-3.5 h-3.5" aria-hidden="true" />
+                  {{ item.name }}
+                </li>
+              </ul>
+            </article>
           </div>
         </div>
       </div>
