@@ -243,24 +243,27 @@ const educations = [
   },
 ];
 
-// Projetos — Tech Challenge da Pós-Tech FIAP (FIAP Cloud Games)
+// Projetos
 type Project = {
   id: number;
   phase: string;
+  label: string;
   title: string;
   description: string;
   thumbnail: string;
   tags: string[];
   repoUrl: string;
   videoUrl: string | null;
+  videoSoon?: boolean;
   inProgress?: boolean;
   accent: string;
 };
 
-const projects: Project[] = [
+const techChallengeProjects: Project[] = [
   {
     id: 1,
     phase: 'Fase 1',
+    label: 'Tech Challenge · Pós-Tech FIAP',
     title: 'API REST com .NET 8 e DDD',
     description:
       'Primeira versão da FIAP Cloud Games: API monolítica em camadas inspiradas em DDD, com autenticação JWT, perfis de usuário e administrador, biblioteca de jogos, promoções e 92 testes automatizados.',
@@ -273,6 +276,7 @@ const projects: Project[] = [
   {
     id: 2,
     phase: 'Fase 2',
+    label: 'Tech Challenge · Pós-Tech FIAP',
     title: 'Do monolito aos microsserviços',
     description:
       'O monolito dividido em 4 microsserviços .NET (usuários, catálogo, pagamentos e notificações) que se comunicam por eventos, com fluxo de compra assíncrono, idempotência e escala com HPA.',
@@ -285,6 +289,7 @@ const projects: Project[] = [
   {
     id: 3,
     phase: 'Fase 3',
+    label: 'Tech Challenge · Pós-Tech FIAP',
     title: 'Serverless + API Gateway',
     description:
       'Evolução da arquitetura: notificações migradas para uma função serverless e os microsserviços atrás de um API Gateway, com CQRS, cache e monitoramento.',
@@ -297,6 +302,7 @@ const projects: Project[] = [
   {
     id: 4,
     phase: 'Fase 4',
+    label: 'Tech Challenge · Pós-Tech FIAP',
     title: 'Kubernetes na Azure',
     description:
       'A plataforma FIAP Cloud Games publicada na nuvem: microsserviços .NET rodando no Azure Kubernetes Service, imagens no Azure Container Registry e Elasticsearch, MongoDB e Redis no cluster.',
@@ -304,8 +310,68 @@ const projects: Project[] = [
     tags: ['Azure AKS', 'ACR', 'Kubernetes', 'Elasticsearch', 'MongoDB', 'Redis'],
     repoUrl: 'https://github.com/LMXSS/TC4',
     videoUrl: null,
+    videoSoon: true,
     inProgress: true,
     accent: 'blue',
+  },
+];
+
+const studyProjects: Project[] = [
+  {
+    id: 5,
+    phase: 'Performance',
+    label: 'Estudo · .NET 8',
+    title: 'Regex vs código com BenchmarkDotNet',
+    description:
+      'Experimento que mede, com BenchmarkDotNet, a diferença de performance entre validar e-mails com expressão regular e com uma validação manual que percorre a string uma única vez.',
+    thumbnail: '/projetos/benchmarkdotnet.jpg',
+    tags: ['.NET 8', 'C#', 'BenchmarkDotNet', 'Regex'],
+    repoUrl: 'https://github.com/LMXSS/BenchmarkDotnet',
+    videoUrl: null,
+    accent: 'amber',
+  },
+  {
+    id: 6,
+    phase: 'Autenticação',
+    label: 'Estudo · .NET 10',
+    title: 'Identity API com RabbitMQ',
+    description:
+      'API de autenticação com os Identity API Endpoints do ASP.NET Core (cadastro, login com token, refresh e 2FA) e mensageria assíncrona com MassTransit, em camadas e com teste do consumer.',
+    thumbnail: '/projetos/identity.jpg',
+    tags: ['.NET 10', 'ASP.NET Identity', 'MassTransit', 'RabbitMQ', 'SQLite', 'xUnit'],
+    repoUrl: 'https://github.com/LMXSS/Identity',
+    videoUrl: null,
+    accent: 'rose',
+  },
+  {
+    id: 7,
+    phase: 'Ferramenta',
+    label: 'Migração de DI · Python',
+    title: 'XMLToBind',
+    description:
+      'Script que converte a configuração do Ninject em XML para bindings em C#. Usei para migrar a injeção de dependência de um sistema legado sem reescrever cada registro à mão.',
+    thumbnail: '/projetos/xmltobind.jpg',
+    tags: ['Python', 'XML', 'Ninject', 'C#'],
+    repoUrl: 'https://github.com/LMXSS/XMLToBind',
+    videoUrl: null,
+    accent: 'lime',
+  },
+];
+
+const projectGroups = [
+  {
+    id: 'tech-challenge',
+    title: 'Tech Challenge · Pós-Tech FIAP',
+    subtitle: 'FIAP Cloud Games, evoluída fase a fase: do monolito ao Kubernetes na Azure.',
+    grid: 'md:grid-cols-2',
+    items: techChallengeProjects,
+  },
+  {
+    id: 'estudos',
+    title: 'Estudos e ferramentas',
+    subtitle: 'Experimentos de performance, autenticação e utilitários criados no dia a dia.',
+    grid: 'md:grid-cols-2 lg:grid-cols-3',
+    items: studyProjects,
   },
 ];
 
@@ -315,6 +381,9 @@ const projectAccent: Record<string, { badge: string; hover: string }> = {
   orange: { badge: 'bg-orange-500/90 text-white', hover: 'hover:border-orange-500/50 hover:shadow-orange-500/10' },
   emerald: { badge: 'bg-emerald-500/90 text-white', hover: 'hover:border-emerald-500/50 hover:shadow-emerald-500/10' },
   blue: { badge: 'bg-blue-500/90 text-white', hover: 'hover:border-blue-500/50 hover:shadow-blue-500/10' },
+  amber: { badge: 'bg-amber-400 text-zinc-950', hover: 'hover:border-amber-400/50 hover:shadow-amber-400/10' },
+  rose: { badge: 'bg-rose-500/90 text-white', hover: 'hover:border-rose-500/50 hover:shadow-rose-500/10' },
+  lime: { badge: 'bg-lime-400 text-zinc-950', hover: 'hover:border-lime-400/50 hover:shadow-lime-400/10' },
 };
 
 const testimonials = [
@@ -650,18 +719,24 @@ const testimonials = [
       <div class="max-w-6xl mx-auto px-6">
         <div class="text-center mb-16">
           <p class="section-label mb-3">05 — Projetos</p>
-          <h2 class="text-4xl font-black text-foreground">Tech Challenge FIAP</h2>
+          <h2 class="text-4xl font-black text-foreground">Projetos</h2>
           <p class="text-muted-foreground mt-3 text-sm max-w-xl mx-auto">
-            <span class="text-indigo-300 font-semibold">FIAP Cloud Games</span> — a plataforma de jogos que evoluí
-            fase a fase no Tech Challenge da
-            <a href="https://postech.fiap.com.br/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-4">Pós-Tech FIAP</a>,
-            do monolito ao Kubernetes na Azure.
+            Do Tech Challenge da
+            <a href="https://postech.fiap.com.br/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-4">Pós-Tech FIAP</a>
+            a estudos e ferramentas que uso no trabalho.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col gap-16">
+        <div v-for="group in projectGroups" :key="group.id">
+          <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-1 mb-6">
+            <h3 class="text-xl font-bold text-foreground">{{ group.title }}</h3>
+            <p class="text-sm text-muted-foreground">{{ group.subtitle }}</p>
+          </div>
+
+        <div :class="['grid grid-cols-1 gap-6', group.grid]">
           <article
-            v-for="(project, index) in projects"
+            v-for="(project, index) in group.items"
             :key="project.id"
             v-reveal="index"
             :class="['group flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl', projectAccent[project.accent]?.hover]"
@@ -676,7 +751,7 @@ const testimonials = [
             >
               <img
                 :src="project.thumbnail"
-                :alt="`Thumbnail do Tech Challenge ${project.phase}: ${project.title}`"
+                :alt="`Thumbnail do projeto ${project.title}`"
                 loading="lazy"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -703,10 +778,10 @@ const testimonials = [
                 <span :class="['text-xs font-bold px-2.5 py-0.5 rounded-full', projectAccent[project.accent]?.badge]">
                   {{ project.phase }}
                 </span>
-                <span class="text-xs text-muted-foreground">Tech Challenge · Pós-Tech FIAP</span>
+                <span class="text-xs text-muted-foreground">{{ project.label }}</span>
               </div>
 
-              <h3 class="text-xl font-bold text-foreground mb-2 leading-snug">{{ project.title }}</h3>
+              <h4 class="text-xl font-bold text-foreground mb-2 leading-snug">{{ project.title }}</h4>
               <p class="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">{{ project.description }}</p>
 
               <div class="flex flex-wrap gap-1.5 mb-5">
@@ -719,7 +794,7 @@ const testimonials = [
                 </span>
               </div>
 
-              <div class="flex flex-wrap gap-3">
+              <div class="flex flex-wrap gap-3 mt-auto">
                 <a
                   v-if="project.videoUrl"
                   :href="project.videoUrl"
@@ -731,7 +806,7 @@ const testimonials = [
                   Assistir no YouTube
                 </a>
                 <span
-                  v-else
+                  v-else-if="project.videoSoon"
                   class="flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-muted-foreground text-sm font-medium cursor-default"
                 >
                   Vídeo em breve
@@ -748,6 +823,8 @@ const testimonials = [
               </div>
             </div>
           </article>
+        </div>
+        </div>
         </div>
       </div>
     </section>
