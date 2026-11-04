@@ -560,9 +560,9 @@ const studyProjects: Project[] = [
   },
 ];
 
-// Todos os projetos juntos, em ordem de exibição no carrossel (o mais recente primeiro)
-const [latestProject, ...otherStudyProjects] = studyProjects;
-const projects: Project[] = [latestProject!, ...techChallengeProjects, ...otherStudyProjects];
+// Todos os projetos juntos, em ordem de exibição no carrossel (Simone Lamas Studio Hair por último)
+const [studioProject, ...otherStudyProjects] = studyProjects;
+const projects: Project[] = [...techChallengeProjects, ...otherStudyProjects, studioProject!];
 
 // Cores de destaque por projeto (estáticas p/ o Tailwind detectar)
 const projectAccent: Record<string, { badge: string; hover: string }> = {
