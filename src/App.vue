@@ -428,6 +428,7 @@ type Project = {
   tags: string[];
   repoUrl: string;
   videoUrl: string | null;
+  siteUrl?: string;
   videoSoon?: boolean;
   inProgress?: boolean;
   accent: string;
@@ -492,6 +493,20 @@ const techChallengeProjects: Project[] = [
 
 const studyProjects: Project[] = [
   {
+    id: 9,
+    phase: 'Landing page',
+    label: 'Cliente real · Angular',
+    title: 'Simone Lamas Studio Hair',
+    description:
+      'Landing page do salão de beleza da minha mãe, com serviços, agendamento direto pelo WhatsApp, horários e mapa. Gerada como site estático, com SEO e dados estruturados.',
+    thumbnail: '/projetos/studio-simonelamas.jpg',
+    tags: ['Angular 21', 'Prerender (SSG)', 'Vercel', 'Cloudflare', 'SEO'],
+    repoUrl: 'https://github.com/LMXSS/Studio-SimoneLamas',
+    siteUrl: 'https://studio.simonelamas.com.br/',
+    videoUrl: null,
+    accent: 'pink',
+  },
+  {
     id: 5,
     phase: 'Performance',
     label: 'Estudo · .NET 8',
@@ -545,8 +560,9 @@ const studyProjects: Project[] = [
   },
 ];
 
-// Todos os projetos juntos, em ordem de exibição no carrossel
-const projects: Project[] = [...techChallengeProjects, ...studyProjects];
+// Todos os projetos juntos, em ordem de exibição no carrossel (o mais recente primeiro)
+const [latestProject, ...otherStudyProjects] = studyProjects;
+const projects: Project[] = [latestProject!, ...techChallengeProjects, ...otherStudyProjects];
 
 // Cores de destaque por projeto (estáticas p/ o Tailwind detectar)
 const projectAccent: Record<string, { badge: string; hover: string }> = {
@@ -557,6 +573,7 @@ const projectAccent: Record<string, { badge: string; hover: string }> = {
   amber: { badge: 'bg-amber-400 text-zinc-950', hover: 'hover:border-amber-400/50 hover:shadow-amber-400/10' },
   rose: { badge: 'bg-rose-500/90 text-white', hover: 'hover:border-rose-500/50 hover:shadow-rose-500/10' },
   lime: { badge: 'bg-lime-400 text-zinc-950', hover: 'hover:border-lime-400/50 hover:shadow-lime-400/10' },
+  pink: { badge: 'bg-pink-300 text-zinc-950', hover: 'hover:border-pink-300/50 hover:shadow-pink-300/10' },
   purple: { badge: 'bg-purple-400 text-zinc-950', hover: 'hover:border-purple-400/50 hover:shadow-purple-400/10' },
 };
 
@@ -951,11 +968,11 @@ const testimonials = [
           >
             <!-- Thumbnail -->
             <a
-              :href="project.videoUrl ?? project.repoUrl"
+              :href="project.videoUrl ?? project.siteUrl ?? project.repoUrl"
               target="_blank"
               rel="noopener noreferrer"
               class="relative block aspect-video overflow-hidden bg-muted"
-              :aria-label="project.videoUrl ? `Assistir vídeo: ${project.title}` : `Ver repositório: ${project.title}`"
+              :aria-label="project.videoUrl ? `Assistir vídeo: ${project.title}` : project.siteUrl ? `Abrir site: ${project.title}` : `Ver repositório: ${project.title}`"
             >
               <img
                 :src="project.thumbnail"
@@ -1011,7 +1028,7 @@ const testimonials = [
                   class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.03] shadow-lg shadow-red-500/20"
                 >
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-                  Assistir no YouTube
+                  Assistir
                 </a>
                 <span
                   v-else-if="project.videoSoon"
@@ -1019,6 +1036,16 @@ const testimonials = [
                 >
                   Vídeo em breve
                 </span>
+                <a
+                  v-if="project.siteUrl"
+                  :href="project.siteUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.03] shadow-lg shadow-indigo-500/20"
+                >
+                  <Globe class="w-4 h-4" aria-hidden="true" />
+                  Ver site
+                </a>
                 <a
                   :href="project.repoUrl"
                   target="_blank"
