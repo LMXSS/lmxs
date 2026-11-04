@@ -25,9 +25,31 @@ const aboutMeText = `Desenvolvedor Full Stack com mais de 4 anos de experiência
 
 Iniciei minha trajetória na programação em 2018, durante minha formação técnica no NAVE, onde tive meu primeiro contato com desenvolvimento de software e com o ecossistema Microsoft. Desde então, venho atuando na construção e evolução de aplicações corporativas, APIs, integrações entre sistemas e soluções voltadas para ambientes de produção.
 
-Atualmente trabalho com tecnologias como .NET, C#, Vue.js, Docker, RabbitMQ, SQL Server e Azure, além de aprofundar meus conhecimentos em arquitetura de software através da Pós-Graduação em Software Architecture da FIAP.
+Atualmente trabalho com tecnologias como .NET, C#, Vue.js, Docker, RabbitMQ, SQL Server e Azure, além de aprofundar meus conhecimentos em arquitetura de software através da Pós-Graduação em Arquitetura de Sistemas .NET da FIAP.
 
 Tenho grande interesse por arquitetura de sistemas, boas práticas de desenvolvimento, microsserviços e soluções escaláveis, buscando sempre entregar software de qualidade que gere valor para usuários e negócios.`;
+
+// Animação de entrada ao rolar a página (respeita prefers-reduced-motion)
+let revealObserver: IntersectionObserver | null = null;
+const vReveal = {
+  mounted(el: HTMLElement, binding: { value?: number }) {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    el.classList.add('reveal');
+    el.style.transitionDelay = `${Math.min(binding.value ?? 0, 6) * 80}ms`;
+    revealObserver ??= new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('reveal-in');
+          revealObserver?.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+    );
+    revealObserver.observe(el);
+  },
+};
 
 const isNavVisible = ref(false);
 const auroraRef = ref(null);
@@ -177,7 +199,7 @@ const educations = [
   {
     id: 5,
     course: 'Arquitetura de Sistemas .NET',
-    type: 'MBA',
+    type: 'Pós-Graduação',
     institution: 'FIAP',
     duration: '2026 — 2027',
     location: 'Rio de Janeiro',
@@ -269,7 +291,7 @@ const projects: Project[] = [
     thumbnail: '/projetos/tech-challenge-fase-3.jpg',
     tags: ['Azure Functions', 'Kong', 'CQRS', 'MongoDB', 'Redis', 'Grafana'],
     repoUrl: 'https://github.com/LMXSS/TC3',
-    videoUrl: null,
+    videoUrl: 'https://youtu.be/tXTYzvfqRQ0',
     accent: 'emerald',
   },
   {
@@ -519,48 +541,42 @@ const testimonials = [
         </div>
 
         <!-- Timeline vertical -->
-        <div class="relative">
-          <div class="absolute left-[5.5rem] top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/60 via-indigo-500/25 to-transparent hidden sm:block"></div>
+        <ol class="relative">
+          <span aria-hidden="true" class="absolute left-3 -translate-x-1/2 top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/70 via-indigo-500/30 to-indigo-500/5"></span>
 
-          <div
+          <li
             v-for="(edu, index) in educations"
             :key="edu.id"
-            class="relative flex gap-6 pb-8 last:pb-0 opacity-0 animate-slide-in-up [animation-fill-mode:forwards]"
-            :style="{ animationDelay: `${index * 0.1}s` }"
+            v-reveal="index"
+            class="relative pl-10 pb-5 last:pb-0"
           >
-            <!-- Date label -->
-            <div class="hidden sm:flex flex-shrink-0 w-20 pt-5 justify-end">
-              <span class="text-xs font-mono text-muted-foreground text-right leading-tight">{{ edu.duration }}</span>
-            </div>
+            <span
+              aria-hidden="true"
+              :class="edu.upcoming
+                ? 'w-3.5 h-3.5 bg-violet-400 shadow-[0_0_14px_rgba(167,139,250,0.7)]'
+                : 'w-3 h-3 bg-card border-2 border-indigo-400/70'"
+              class="absolute left-3 top-[25px] -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-background z-10"
+            ></span>
 
-            <!-- Dot -->
-            <div class="hidden sm:flex flex-shrink-0 items-start pt-[22px]">
-              <div :class="edu.upcoming ? 'bg-violet-500 border-violet-300 shadow-md shadow-violet-500/50' : 'bg-indigo-500 border-indigo-300'"
-                class="w-3 h-3 rounded-full border-2 z-10 -ml-1.5">
-              </div>
-            </div>
-
-            <!-- Card -->
-            <div class="flex-1 group p-5 rounded-2xl border border-border bg-card hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/5">
-              <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+            <div class="group p-5 rounded-2xl border border-border bg-card hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/5">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <div class="flex flex-wrap items-center gap-2">
-                  <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
                     {{ edu.type }}
                   </span>
-                  <span v-if="edu.upcoming" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                    Em breve
+                  <span v-if="edu.upcoming" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-violet-500/10 text-violet-300 border border-violet-500/20">
+                    Em andamento
                   </span>
                 </div>
-                <!-- mobile date -->
-                <span class="sm:hidden text-xs font-mono text-muted-foreground">{{ edu.duration }}</span>
+                <span class="text-xs font-mono text-muted-foreground tabular-nums">{{ edu.duration }}</span>
               </div>
               <h3 class="text-base font-bold text-foreground mb-1 group-hover:text-indigo-300 transition-colors leading-snug">
                 {{ edu.course }}
               </h3>
               <p class="text-sm text-muted-foreground">{{ edu.institution }} · {{ edu.location }}</p>
             </div>
-          </div>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -572,21 +588,22 @@ const testimonials = [
           <h2 class="text-4xl font-black text-foreground">Experiência Profissional</h2>
         </div>
 
-        <div class="relative">
-          <div class="absolute left-5 top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/70 via-indigo-500/30 to-transparent"></div>
+        <ol class="relative">
+          <span aria-hidden="true" class="absolute left-3 -translate-x-1/2 top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/70 via-indigo-500/30 to-indigo-500/5"></span>
 
-          <div
+          <li
             v-for="(exp, index) in experiences"
             :key="exp.id"
-            class="relative pl-14 pb-8 last:pb-0 opacity-0 animate-slide-in-up [animation-fill-mode:forwards]"
-            :style="{ animationDelay: `${index * 0.12}s` }"
+            v-reveal="index"
+            class="relative pl-10 pb-5 last:pb-0"
           >
-            <div
+            <span
+              aria-hidden="true"
               :class="exp.isCurrent
-                ? 'bg-indigo-500 border-indigo-300 shadow-md shadow-indigo-500/60 scale-110'
-                : 'bg-card border-border'"
-              class="absolute left-[15px] top-5 w-4 h-4 rounded-full border-2 z-10"
-            ></div>
+                ? 'w-3.5 h-3.5 bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.8)]'
+                : 'w-3 h-3 bg-card border-2 border-indigo-400/50'"
+              class="absolute left-3 top-[31px] -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-muted z-10"
+            ></span>
 
             <a :href="exp.companyLink" target="_blank" rel="noopener noreferrer" class="block group">
               <div class="p-5 rounded-2xl border border-border bg-card hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/5">
@@ -603,10 +620,10 @@ const testimonials = [
                 </div>
                 <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
                   <span class="font-semibold text-indigo-400">{{ exp.company }}</span>
-                  <span class="text-border">·</span>
+                  <span class="text-muted-foreground/50">·</span>
                   <span class="text-muted-foreground">{{ exp.type }}</span>
                 </div>
-                <div class="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                   <span class="flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -623,8 +640,8 @@ const testimonials = [
                 </div>
               </div>
             </a>
-          </div>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -632,8 +649,8 @@ const testimonials = [
     <section id="projetos" class="py-20 md:py-32 bg-background">
       <div class="max-w-6xl mx-auto px-6">
         <div class="text-center mb-16">
-          <p class="section-label mb-3">05 — Portfólio</p>
-          <h2 class="text-4xl font-black text-foreground">Projetos</h2>
+          <p class="section-label mb-3">05 — Projetos</p>
+          <h2 class="text-4xl font-black text-foreground">Tech Challenge FIAP</h2>
           <p class="text-muted-foreground mt-3 text-sm max-w-xl mx-auto">
             <span class="text-indigo-300 font-semibold">FIAP Cloud Games</span> — a plataforma de jogos que evoluí
             fase a fase no Tech Challenge da
@@ -646,8 +663,8 @@ const testimonials = [
           <article
             v-for="(project, index) in projects"
             :key="project.id"
-            :class="['group flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl opacity-0 animate-slide-in-up [animation-fill-mode:forwards]', projectAccent[project.accent]?.hover]"
-            :style="{ animationDelay: `${index * 0.1}s` }"
+            v-reveal="index"
+            :class="['group flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl', projectAccent[project.accent]?.hover]"
           >
             <!-- Thumbnail -->
             <a
