@@ -47,10 +47,11 @@ const navSections = [
   { id: 'habilidades', label: 'Habilidades' },
   { id: 'formacao', label: 'Formação' },
   { id: 'experiencia', label: 'Experiência' },
+  { id: 'projetos', label: 'Projetos' },
   { id: 'recomendacoes', label: 'Recomendações' },
 ];
 
-const sectionIds = ['sobre-mim', 'habilidades', 'formacao', 'experiencia', 'recomendacoes', 'contato'];
+const sectionIds = ['sobre-mim', 'habilidades', 'formacao', 'experiencia', 'projetos', 'recomendacoes', 'contato'];
 
 const handleScroll = () => {
   if (auroraRef.value) {
@@ -220,6 +221,80 @@ const educations = [
   },
 ];
 
+// Projetos — Tech Challenge da Pós-Tech FIAP (FIAP Cloud Games)
+type Project = {
+  id: number;
+  phase: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  tags: string[];
+  repoUrl: string;
+  videoUrl: string | null;
+  inProgress?: boolean;
+  accent: string;
+};
+
+const projects: Project[] = [
+  {
+    id: 1,
+    phase: 'Fase 1',
+    title: 'API REST com .NET 8 e DDD',
+    description:
+      'Primeira versão da FIAP Cloud Games: API monolítica em camadas inspiradas em DDD, com autenticação JWT, perfis de usuário e administrador, biblioteca de jogos, promoções e 92 testes automatizados.',
+    thumbnail: '/projetos/tech-challenge-fase-1.jpg',
+    tags: ['.NET 8', 'DDD', 'EF Core', 'JWT', 'OpenTelemetry', 'xUnit'],
+    repoUrl: 'https://github.com/LMXSS/TC1',
+    videoUrl: 'https://youtu.be/HUkTjjhVugY',
+    accent: 'violet',
+  },
+  {
+    id: 2,
+    phase: 'Fase 2',
+    title: 'Do monolito aos microsserviços',
+    description:
+      'O monolito dividido em 4 microsserviços .NET (usuários, catálogo, pagamentos e notificações) que se comunicam por eventos, com fluxo de compra assíncrono, idempotência e escala com HPA.',
+    thumbnail: '/projetos/tech-challenge-fase-2.jpg',
+    tags: ['Microsserviços', 'RabbitMQ', 'MassTransit', 'Docker', 'Kubernetes'],
+    repoUrl: 'https://github.com/LMXSS/TC2',
+    videoUrl: 'https://youtu.be/ozCAqzTyqTI',
+    accent: 'orange',
+  },
+  {
+    id: 3,
+    phase: 'Fase 3',
+    title: 'Serverless + API Gateway',
+    description:
+      'Evolução da arquitetura: notificações migradas para uma função serverless e os microsserviços atrás de um API Gateway, com CQRS, cache e monitoramento.',
+    thumbnail: '/projetos/tech-challenge-fase-3.jpg',
+    tags: ['Azure Functions', 'Kong', 'CQRS', 'MongoDB', 'Redis', 'Grafana'],
+    repoUrl: 'https://github.com/LMXSS/TC3',
+    videoUrl: null,
+    accent: 'emerald',
+  },
+  {
+    id: 4,
+    phase: 'Fase 4',
+    title: 'Kubernetes na Azure',
+    description:
+      'A plataforma FIAP Cloud Games publicada na nuvem: microsserviços .NET rodando no Azure Kubernetes Service, imagens no Azure Container Registry e Elasticsearch, MongoDB e Redis no cluster.',
+    thumbnail: '/projetos/tech-challenge-fase-4.jpg',
+    tags: ['Azure AKS', 'ACR', 'Kubernetes', 'Elasticsearch', 'MongoDB', 'Redis'],
+    repoUrl: 'https://github.com/LMXSS/TC4',
+    videoUrl: null,
+    inProgress: true,
+    accent: 'blue',
+  },
+];
+
+// Cores de destaque por projeto (estáticas p/ o Tailwind detectar)
+const projectAccent: Record<string, { badge: string; hover: string }> = {
+  violet: { badge: 'bg-violet-500/90 text-white', hover: 'hover:border-violet-500/50 hover:shadow-violet-500/10' },
+  orange: { badge: 'bg-orange-500/90 text-white', hover: 'hover:border-orange-500/50 hover:shadow-orange-500/10' },
+  emerald: { badge: 'bg-emerald-500/90 text-white', hover: 'hover:border-emerald-500/50 hover:shadow-emerald-500/10' },
+  blue: { badge: 'bg-blue-500/90 text-white', hover: 'hover:border-blue-500/50 hover:shadow-blue-500/10' },
+};
+
 const testimonials = [
   {
     id: 1,
@@ -316,7 +391,7 @@ const testimonials = [
         </p>
 
         <div class="flex flex-wrap gap-3 justify-center mt-1">
-          <a href="https://github.com/LMXSS" target="_blank" rel="noopener noreferrer">
+          <a href="#projetos">
             <button class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-lg shadow-indigo-500/30 flex items-center gap-2">
               <i class="devicon-github-original text-base"></i>
               Ver Projetos
@@ -553,11 +628,118 @@ const testimonials = [
       </div>
     </section>
 
+    <!-- ─── PROJETOS ───────────────────────────────── -->
+    <section id="projetos" class="py-20 md:py-32 bg-background">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="section-label mb-3">05 — Portfólio</p>
+          <h2 class="text-4xl font-black text-foreground">Projetos</h2>
+          <p class="text-muted-foreground mt-3 text-sm max-w-xl mx-auto">
+            <span class="text-indigo-300 font-semibold">FIAP Cloud Games</span> — a plataforma de jogos que evoluí
+            fase a fase no Tech Challenge da
+            <a href="https://postech.fiap.com.br/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-4">Pós-Tech FIAP</a>,
+            do monolito ao Kubernetes na Azure.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <article
+            v-for="(project, index) in projects"
+            :key="project.id"
+            :class="['group flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl opacity-0 animate-slide-in-up [animation-fill-mode:forwards]', projectAccent[project.accent]?.hover]"
+            :style="{ animationDelay: `${index * 0.1}s` }"
+          >
+            <!-- Thumbnail -->
+            <a
+              :href="project.videoUrl ?? project.repoUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="relative block aspect-video overflow-hidden bg-muted"
+              :aria-label="project.videoUrl ? `Assistir vídeo: ${project.title}` : `Ver repositório: ${project.title}`"
+            >
+              <img
+                :src="project.thumbnail"
+                :alt="`Thumbnail do Tech Challenge ${project.phase}: ${project.title}`"
+                loading="lazy"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div
+                v-if="project.videoUrl"
+                class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-300"
+              >
+                <span class="flex items-center justify-center w-16 h-16 rounded-full bg-red-600 text-white shadow-xl opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300">
+                  <svg class="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </div>
+              <span
+                v-if="project.inProgress"
+                class="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-black/70 text-amber-300 border border-amber-400/30 backdrop-blur"
+              >
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                Em andamento
+              </span>
+            </a>
+
+            <!-- Conteúdo -->
+            <div class="flex flex-col flex-1 p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span :class="['text-xs font-bold px-2.5 py-0.5 rounded-full', projectAccent[project.accent]?.badge]">
+                  {{ project.phase }}
+                </span>
+                <span class="text-xs text-muted-foreground">Tech Challenge · Pós-Tech FIAP</span>
+              </div>
+
+              <h3 class="text-xl font-bold text-foreground mb-2 leading-snug">{{ project.title }}</h3>
+              <p class="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">{{ project.description }}</p>
+
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                <span
+                  v-for="tag in project.tags"
+                  :key="tag"
+                  class="px-2.5 py-1 rounded-md text-xs font-medium bg-muted text-slate-300 border border-border"
+                >
+                  {{ tag }}
+                </span>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <a
+                  v-if="project.videoUrl"
+                  :href="project.videoUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.03] shadow-lg shadow-red-500/20"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                  Assistir no YouTube
+                </a>
+                <span
+                  v-else
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-muted-foreground text-sm font-medium cursor-default"
+                >
+                  Vídeo em breve
+                </span>
+                <a
+                  :href="project.repoUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm transition-all duration-200 hover:scale-[1.03]"
+                >
+                  <i class="devicon-github-original text-base"></i>
+                  Código
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- ─── RECOMENDAÇÕES ──────────────────────────── -->
-    <section id="recomendacoes" class="py-20 md:py-32 bg-background">
+    <section id="recomendacoes" class="py-20 md:py-32 bg-muted">
       <div class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-16">
-          <p class="section-label mb-3">05 — Depoimentos</p>
+          <p class="section-label mb-3">06 — Depoimentos</p>
           <h2 class="text-4xl font-black text-foreground">Recomendações</h2>
         </div>
 
@@ -605,10 +787,10 @@ const testimonials = [
     </section>
 
     <!-- ─── CONTATO ────────────────────────────────── -->
-    <section id="contato" class="py-20 md:py-32 bg-muted">
+    <section id="contato" class="py-20 md:py-32 bg-background">
       <div class="max-w-5xl mx-auto px-6">
         <div class="text-center mb-16">
-          <p class="section-label mb-3">06 — Contato</p>
+          <p class="section-label mb-3">07 — Contato</p>
           <h2 class="text-4xl font-black text-foreground">Currículo &amp; Contato</h2>
           <p class="text-muted-foreground mt-3 max-w-sm mx-auto text-sm">
             Aberto a oportunidades, freelas e projetos interessantes.
