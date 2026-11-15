@@ -242,13 +242,24 @@ html.light {
   transform: none;
 }
 
-/* Chips da stack principal: borda e fundo na cor da marca */
-.main-chip {
-  border-color: color-mix(in oklab, var(--brand) 35%, transparent);
-  background: color-mix(in oklab, var(--brand) 9%, transparent);
+/* Itens de Habilidades: negrito só no hover, sem deslocar os vizinhos
+   (a cópia invisível em negrito reserva a largura final) */
+.skill-item {
+  display: inline-grid;
+  cursor: default;
 }
-.main-chip:hover {
-  border-color: color-mix(in oklab, var(--brand) 70%, transparent);
-  background: color-mix(in oklab, var(--brand) 16%, transparent);
-  box-shadow: 0 10px 30px -10px color-mix(in oklab, var(--brand) 60%, transparent);
+.skill-item > span {
+  grid-area: 1 / 1;
+}
+.skill-item__ghost {
+  visibility: hidden;
+  font-weight: 600;
+}
+.skill-item__label {
+  color: rgb(148 163 184); /* slate-400 */
+  transition: color 150ms ease;
+}
+.skill-item:hover .skill-item__label {
+  color: rgb(241 245 249); /* slate-100 */
+  font-weight: 600;
 }

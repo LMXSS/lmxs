@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted, type Component } from 'vue';
-import {
-  Server, LayoutTemplate, Database, Workflow, Cloud, Activity,
-  Boxes, Waypoints, BadgeCheck, Rocket,
-  Zap, Layers, ShieldCheck, MessageSquare, Globe, CloudLightning, FlaskConical, Gauge,
-  Hexagon, Split, History, Radio, Repeat, Fingerprint, Building2,
-  Puzzle, Sparkles, Copy, Scissors, TestTube, MessageSquareText, Timer,
-  GitBranch, Tag, Container, TrendingUp, Network,
-} from 'lucide-vue-next';
-import ShapeGrid from './components/ui/ShapeGrid.vue';
+import { onMounted, ref, onUnmounted } from 'vue';
+import DotField from './components/ui/DotField.vue';
+import TechText from './components/ui/TechText.vue';
+import { Globe } from 'lucide-vue-next';
 import {
   Carousel,
   CarouselContent,
@@ -24,11 +18,16 @@ import { Textarea } from '@/components/ui/textarea';
 import caioImage from './assets/CaioCorreia.jpg';
 import michaelImage from './assets/MichaelCastro.png';
 import allysonImage from './assets/AllysonAlves.png';
+import vagnerImage from './assets/VagnerHerdi.jpg';
 import myImageAvatar from './assets/myImage.jpg';
 
 const myImage = myImageAvatar;
 const myName = 'Gabriel Lamas';
-const myTitle = 'FullStack Developer · Vue.js & C#/.NET';
+const myTitle = 'Desenvolvedor Full Stack .NET';
+const myTagline = [
+  'Desenvolvo APIs e sistemas distribuídos em C#/.NET, com front-ends em Vue, React e Angular.',
+  'Pós-graduando em Arquitetura de Sistemas .NET pela FIAP.',
+];
 const aboutMeText = `Desenvolvedor Full Stack com mais de 4 anos de experiência no desenvolvimento de sistemas utilizando C#, .NET, Vue.js e SQL Server.
 
 Iniciei minha trajetória na programação em 2018, durante minha formação técnica no NAVE, onde tive meu primeiro contato com desenvolvimento de software e com o ecossistema Microsoft. Desde então, venho atuando na construção e evolução de aplicações corporativas, APIs, integrações entre sistemas e soluções voltadas para ambientes de produção.
@@ -116,226 +115,48 @@ onUnmounted(() => {
 });
 
 // ─── Habilidades ──────────────────────────────────────────
-type Skill = { name: string; color: string; devicon?: string; lucide?: Component };
-
-// Stack principal — destaque no topo da seção
-const mainStack: Skill[] = [
-  { name: 'C#', devicon: 'devicon-csharp-plain', color: '#A179DC' },
-  { name: '.NET', devicon: 'devicon-dotnetcore-plain', color: '#8B6CF6' },
-  { name: 'Angular', devicon: 'devicon-angular-plain', color: '#F0476A' },
-  { name: 'Vue.js', devicon: 'devicon-vuejs-plain', color: '#42B883' },
-  { name: 'React', devicon: 'devicon-react-original', color: '#61DAFB' },
-];
-
-type SkillGroup = { title: string; description: string; icon: Component; accent: string; items: Skill[] };
+type SkillGroup = { title: string; items: string[] };
 
 const skillGroups: SkillGroup[] = [
-  {
-    title: 'Back-end',
-    description: 'APIs, aplicações MVC e acesso a dados no ecossistema .NET.',
-    icon: Server,
-    accent: 'violet',
-    items: [
-      { name: 'C#', devicon: 'devicon-csharp-plain', color: '#A179DC' },
-      { name: 'ASP.NET Core', devicon: 'devicon-dotnetcore-plain', color: '#8B6CF6' },
-      { name: 'Minimal APIs', lucide: Zap, color: '#FBBF24' },
-      { name: 'Blazor', devicon: 'devicon-blazor-original', color: '#A78BFA' },
-      { name: 'Entity Framework Core', devicon: 'devicon-entityframeworkcore-plain', color: '#A78BFA' },
-      { name: 'Dapper', lucide: Layers, color: '#F59E0B' },
-      { name: 'ASP.NET Identity', lucide: ShieldCheck, color: '#FB7185' },
-      { name: 'Swagger / OpenAPI', devicon: 'devicon-swagger-plain', color: '#85EA2D' },
-    ],
-  },
-  {
-    title: 'Front-end',
-    description: 'SPAs com os três grandes frameworks e interfaces responsivas.',
-    icon: LayoutTemplate,
-    accent: 'sky',
-    items: [
-      { name: 'Angular', devicon: 'devicon-angular-plain', color: '#F0476A' },
-      { name: 'Vue.js', devicon: 'devicon-vuejs-plain', color: '#42B883' },
-      { name: 'React', devicon: 'devicon-react-original', color: '#61DAFB' },
-      { name: 'TypeScript', devicon: 'devicon-typescript-plain', color: '#4F9CF9' },
-      { name: 'JavaScript', devicon: 'devicon-javascript-plain', color: '#F7DF1E' },
-      { name: 'Tailwind CSS', devicon: 'devicon-tailwindcss-original', color: '#38BDF8' },
-      { name: 'Bootstrap', devicon: 'devicon-bootstrap-plain', color: '#A37CF0' },
-    ],
-  },
-  {
-    title: 'Bancos de dados',
-    description: 'Relacional, documentos, cache e busca, cada um no seu papel.',
-    icon: Database,
-    accent: 'emerald',
-    items: [
-      { name: 'SQL Server', devicon: 'devicon-microsoftsqlserver-plain', color: '#F87171' },
-      { name: 'PostgreSQL', devicon: 'devicon-postgresql-plain', color: '#6FA8DC' },
-      { name: 'MongoDB', devicon: 'devicon-mongodb-plain', color: '#4DB33D' },
-      { name: 'Redis', devicon: 'devicon-redis-plain', color: '#F05A4F' },
-      { name: 'Elasticsearch', devicon: 'devicon-elasticsearch-plain', color: '#F9C74F' },
-      { name: 'DynamoDB', devicon: 'devicon-dynamodb-plain', color: '#5B8FF9' },
-      { name: 'SQLite', devicon: 'devicon-sqlite-plain', color: '#5AB0E6' },
-    ],
-  },
-  {
-    title: 'Mensageria & APIs',
-    description: 'Comunicação síncrona e por eventos entre serviços.',
-    icon: Workflow,
-    accent: 'orange',
-    items: [
-      { name: 'RabbitMQ', devicon: 'devicon-rabbitmq-original', color: '#FF7A1A' },
-      { name: 'MassTransit', lucide: MessageSquare, color: '#A78BFA' },
-      { name: 'Apache Kafka', devicon: 'devicon-apachekafka-original', color: '#E5E7EB' },
-      { name: 'Kong API Gateway', lucide: Waypoints, color: '#34D399' },
-      { name: 'REST', lucide: Globe, color: '#94A3B8' },
-      { name: 'GraphQL', devicon: 'devicon-graphql-plain', color: '#E535AB' },
-      { name: 'gRPC', devicon: 'devicon-grpc-plain', color: '#4FC3C7' },
-    ],
-  },
-  {
-    title: 'Cloud & DevOps',
-    description: 'Containers, orquestração e deploy automatizado na nuvem.',
-    icon: Cloud,
-    accent: 'blue',
-    items: [
-      { name: 'Azure (AKS · ACR)', devicon: 'devicon-azure-plain', color: '#3B9BFF' },
-      { name: 'Azure Functions', lucide: CloudLightning, color: '#FACC15' },
-      { name: 'AWS', devicon: 'devicon-amazonwebservices-plain', color: '#FF9900' },
-      { name: 'Docker', devicon: 'devicon-docker-plain', color: '#2496ED' },
-      { name: 'Kubernetes', devicon: 'devicon-kubernetes-plain', color: '#5B8CF0' },
-      { name: 'GitHub Actions', devicon: 'devicon-githubactions-plain', color: '#8BB4F7' },
-      { name: 'Azure DevOps', devicon: 'devicon-azuredevops-plain', color: '#3B9BFF' },
-      { name: 'Git', devicon: 'devicon-git-plain', color: '#F05033' },
-    ],
-  },
-  {
-    title: 'Observabilidade & Testes',
-    description: 'Medir, monitorar e garantir que o código faz o que promete.',
-    icon: Activity,
-    accent: 'amber',
-    items: [
-      { name: 'OpenTelemetry', devicon: 'devicon-opentelemetry-plain', color: '#F5A800' },
-      { name: 'Prometheus', devicon: 'devicon-prometheus-original', color: '#E6522C' },
-      { name: 'Grafana', devicon: 'devicon-grafana-plain', color: '#F46800' },
-      { name: 'New Relic', devicon: 'devicon-newrelic-plain', color: '#1CE783' },
-      { name: 'Datadog', devicon: 'devicon-datadog-original', color: '#A66FE0' },
-      { name: 'xUnit', lucide: FlaskConical, color: '#34D399' },
-      { name: 'BenchmarkDotNet', lucide: Gauge, color: '#F5A524' },
-    ],
-  },
+  { title: 'Back-end', items: ['C#', '.NET 6+', '.NET Framework 4.5.2', 'ASP.NET Core', 'Entity Framework Core', 'Dapper', 'Python', 'Ruby'] },
+  { title: 'Front-end', items: ['Angular', 'React', 'Vue.js', 'TypeScript', 'JavaScript', 'Blazor'] },
+  { title: 'Dados', items: ['SQL Server', 'PostgreSQL', 'MongoDB', 'Redis'] },
+  { title: 'Mensageria & APIs', items: ['RabbitMQ', 'Apache Kafka', 'SignalR', 'Azure API Management', 'Kong'] },
+  { title: 'Cloud & DevOps', items: ['Terraform', 'Azure', 'AWS', 'Docker', 'Kubernetes', 'GitHub Actions'] },
+  { title: 'Observabilidade', items: ['Grafana', 'New Relic', 'Datadog', 'Zabbix'] },
 ];
 
-type Practice = { name: string; icon: Component };
-type PracticeGroup = { title: string; description: string; icon: Component; accent: string; items: Practice[] };
-
-const practiceGroups: PracticeGroup[] = [
-  {
-    title: 'Arquitetura',
-    description: 'Como divido e organizo sistemas.',
-    icon: Boxes,
-    accent: 'violet',
-    items: [
-      { name: 'Microsserviços', icon: Boxes },
-      { name: 'Clean Architecture', icon: Layers },
-      { name: 'Arquitetura Hexagonal', icon: Hexagon },
-      { name: 'Domain-Driven Design', icon: Puzzle },
-      { name: 'CQRS', icon: Split },
-      { name: 'Event Sourcing', icon: History },
-      { name: 'Event-Driven', icon: Radio },
-      { name: 'Serverless', icon: CloudLightning },
-    ],
-  },
-  {
-    title: 'Integração & Resiliência',
-    description: 'Como os serviços conversam sem quebrar.',
-    icon: Network,
-    accent: 'orange',
-    items: [
-      { name: 'API Gateway', icon: Waypoints },
-      { name: 'Mensageria assíncrona', icon: MessageSquare },
-      { name: 'Idempotência', icon: Fingerprint },
-      { name: 'Retry', icon: Repeat },
-      { name: 'Multi-tenant', icon: Building2 },
-      { name: 'REST', icon: Globe },
-    ],
-  },
-  {
-    title: 'Qualidade de código',
-    description: 'Como mantenho o código legível e testado.',
-    icon: BadgeCheck,
-    accent: 'emerald',
-    items: [
-      { name: 'SOLID', icon: Puzzle },
-      { name: 'Clean Code', icon: Sparkles },
-      { name: 'DRY', icon: Copy },
-      { name: 'YAGNI', icon: Scissors },
-      { name: 'TDD', icon: TestTube },
-      { name: 'BDD', icon: MessageSquareText },
-      { name: 'Testes de carga', icon: Timer },
-    ],
-  },
-  {
-    title: 'Entrega',
-    description: 'Como o código chega em produção.',
-    icon: Rocket,
-    accent: 'sky',
-    items: [
-      { name: 'CI / CD', icon: Rocket },
-      { name: 'Gitflow', icon: GitBranch },
-      { name: 'Versionamento Semântico', icon: Tag },
-      { name: 'Containers', icon: Container },
-      { name: 'Autoscaling (HPA)', icon: TrendingUp },
-    ],
-  },
+const practiceGroups: SkillGroup[] = [
+  { title: 'Arquitetura', items: ['Microsserviços', 'DDD', 'Clean Architecture', 'CQRS', 'Event-Driven', 'Serverless'] },
+  { title: 'Práticas', items: ['SOLID', 'TDD', 'CI/CD', 'Infraestrutura como código', 'Observabilidade'] },
 ];
-
-// Cores por grupo (estáticas p/ o Tailwind detectar)
-const groupAccent: Record<string, { box: string; card: string; pill: string }> = {
-  violet: {
-    box: 'bg-violet-500/15 text-violet-300 ring-1 ring-violet-500/30',
-    card: 'hover:border-violet-500/40 hover:shadow-violet-500/10',
-    pill: 'border-violet-500/25 bg-violet-500/10 text-violet-200 hover:border-violet-400/60 hover:bg-violet-500/20',
-  },
-  sky: {
-    box: 'bg-sky-500/15 text-sky-300 ring-1 ring-sky-500/30',
-    card: 'hover:border-sky-500/40 hover:shadow-sky-500/10',
-    pill: 'border-sky-500/25 bg-sky-500/10 text-sky-200 hover:border-sky-400/60 hover:bg-sky-500/20',
-  },
-  emerald: {
-    box: 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30',
-    card: 'hover:border-emerald-500/40 hover:shadow-emerald-500/10',
-    pill: 'border-emerald-500/25 bg-emerald-500/10 text-emerald-200 hover:border-emerald-400/60 hover:bg-emerald-500/20',
-  },
-  orange: {
-    box: 'bg-orange-500/15 text-orange-300 ring-1 ring-orange-500/30',
-    card: 'hover:border-orange-500/40 hover:shadow-orange-500/10',
-    pill: 'border-orange-500/25 bg-orange-500/10 text-orange-200 hover:border-orange-400/60 hover:bg-orange-500/20',
-  },
-  blue: {
-    box: 'bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30',
-    card: 'hover:border-blue-500/40 hover:shadow-blue-500/10',
-    pill: 'border-blue-500/25 bg-blue-500/10 text-blue-200 hover:border-blue-400/60 hover:bg-blue-500/20',
-  },
-  amber: {
-    box: 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/30',
-    card: 'hover:border-amber-500/40 hover:shadow-amber-500/10',
-    pill: 'border-amber-500/25 bg-amber-500/10 text-amber-200 hover:border-amber-400/60 hover:bg-amber-500/20',
-  },
-};
 
 // Contagem real de tecnologias para o destaque do "Sobre mim"
-const techCount = new Set(skillGroups.flatMap((g) => g.items.map((i) => i.name))).size;
+const techCount = new Set(skillGroups.flatMap((g) => g.items)).size;
 const techCountLabel = `${Math.floor(techCount / 5) * 5}+`;
 
-const experiences = [
+type Experience = {
+  id: number; role: string; company: string; companyLink: string; type: string;
+  /** 'AAAA-MM' */
+  start: string;
+  /** 'AAAA-MM'; null = emprego atual */
+  end: string | null;
+  location: string; summary?: string; stack?: string[];
+};
+
+const experiences: Experience[] = [
   {
     id: 1,
     role: 'Desenvolvedor Full Stack',
     company: 'TIPLAN',
     companyLink: 'https://www.tiplan.com.br/',
     type: 'Tempo integral',
-    duration: 'out de 2025 — presente',
+    start: '2025-10',
+    end: null,
     location: 'Rio de Janeiro',
-    isCurrent: true,
+    summary:
+      'Sistema tributário multi-tenant usado por cinco prefeituras. Atuo no cálculo de IPTU, na declaração de ITBI e na integração com o webservice do TJ-RJ para petições intercorrentes; participei da migração do sistema para .NET 10.',
+    stack: ['.NET', 'ASP.NET MVC', 'Entity Framework', 'SQL Server', 'Vue', 'Hangfire', 'Grafana', 'New Relic'],
   },
   {
     id: 2,
@@ -343,9 +164,12 @@ const experiences = [
     company: 'Target Work',
     companyLink: 'https://targetwork.com.br/',
     type: 'Terceirizado',
-    duration: 'jul de 2023 — out de 2025 · 2 anos 4 meses',
+    start: '2023-07',
+    end: '2025-10',
     location: 'Rio de Janeiro, Brasil · Remota',
-    isCurrent: false,
+    summary:
+      'Desenvolvimento e manutenção de aplicações .NET para clientes da consultoria, incluindo a migração de front-ends de Angular para Vue.js.',
+    stack: ['C#', '.NET', 'SQL Server', 'Angular', 'Vue.js'],
   },
   {
     id: 3,
@@ -353,9 +177,9 @@ const experiences = [
     company: 'GlobalTera',
     companyLink: 'https://globaltera.com.br/',
     type: 'Tempo integral',
-    duration: 'jan de 2023 — jul de 2023 · 7 meses',
+    start: '2023-01',
+    end: '2023-07',
     location: 'Barra da Tijuca, Rio de Janeiro · Presencial',
-    isCurrent: false,
   },
   {
     id: 4,
@@ -363,11 +187,38 @@ const experiences = [
     company: 'Nuvor',
     companyLink: 'https://nuvor.com.br/',
     type: 'Temporário',
-    duration: 'mar de 2023 — mai de 2023 · 3 meses',
+    start: '2023-03',
+    end: '2023-05',
     location: 'Rio de Janeiro, Brasil',
-    isCurrent: false,
   },
 ];
+
+const MONTHS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+const parseMonth = (ym: string) => {
+  const [y, m] = ym.split('-').map(Number);
+  return { y: y ?? 0, m: m ?? 1 };
+};
+
+// 'AAAA-MM' -> 'Julho 2023'
+const formatMonth = (ym: string) => {
+  const { y, m } = parseMonth(ym);
+  return `${MONTHS[m - 1]} ${y}`;
+};
+
+// Conta os meses inclusive (como o LinkedIn): jul/2023 a out/2025 = 2 anos e 4 meses
+const formatDuration = (start: string, end: string | null) => {
+  const a = parseMonth(start);
+  const now = new Date();
+  const b = end ? parseMonth(end) : { y: now.getFullYear(), m: now.getMonth() + 1 };
+  const total = (b.y - a.y) * 12 + (b.m - a.m) + 1;
+  const years = Math.floor(total / 12);
+  const months = total % 12;
+  const parts = [];
+  if (years) parts.push(`${years} ${years === 1 ? 'ano' : 'anos'}`);
+  if (months) parts.push(`${months} ${months === 1 ? 'mês' : 'meses'}`);
+  return parts.join(' e ');
+};
 
 const educations = [
   {
@@ -426,7 +277,8 @@ type Project = {
   description: string;
   thumbnail: string;
   tags: string[];
-  repoUrl: string;
+  /** null = repositório ainda não publicado (botão aparece desativado) */
+  repoUrl: string | null;
   videoUrl: string | null;
   siteUrl?: string;
   videoSoon?: boolean;
@@ -488,6 +340,35 @@ const techChallengeProjects: Project[] = [
     videoSoon: true,
     inProgress: true,
     accent: 'blue',
+  },
+  {
+    id: 6,
+    phase: 'Fase 4',
+    label: 'Tech Challenge · Pós-Tech FIAP',
+    title: 'Kubernetes na AWS',
+    description:
+      'A plataforma FIAP Cloud Games publicada na nuvem: microsserviços .NET rodando no Amazon Elastic Kubernetes Service, imagens no Amazon Elastic Container Registry e Elasticsearch, MongoDB e Redis no cluster.',
+    thumbnail: '/projetos/tech-challenge-fase-4-aws.jpg',
+    tags: ['Amazon EKS', 'ECR', 'Kubernetes', 'Elasticsearch', 'MongoDB', 'Redis'],
+    repoUrl: null,
+    videoUrl: null,
+    inProgress: true,
+    accent: 'amber',
+  },
+  {
+    id: 5,
+    phase: 'Hackathon',
+    label: 'Tech Challenge · Pós-Tech FIAP',
+    title: 'Conexão Solidária',
+    description:
+      'Plataforma de doações para a ONG Esperança Solidária: microsserviços .NET com autenticação JWT por perfil, doações processadas por eventos no RabbitMQ, deploy em Kubernetes, CI no GitHub Actions e monitoramento com Grafana e Zabbix.',
+    thumbnail: '/projetos/hackathon.jpg',
+    tags: ['.NET', 'RabbitMQ', 'Kubernetes', 'Grafana', 'Zabbix', 'GitHub Actions', 'JWT'],
+    repoUrl: null,
+    videoUrl: null,
+    videoSoon: true,
+    inProgress: true,
+    accent: 'rose',
   },
 ];
 
@@ -621,6 +502,15 @@ const testimonials = [
     linkedIn: 'https://www.linkedin.com/in/allyson-alves/',
     message: 'Gabriel é um excelente desenvolvedor .NET C# com quem tive a oportunidade de trabalhar. Sua habilidade técnica é impressionante, e sua abordagem prática para resolver desafios torna-o um membro valioso da equipe. O que diferencia Gabriel não é apenas seu conhecimento técnico, mas sua postura proativa em busca constante de aprendizado e crescimento profissional.',
   },
+  {
+    id: 4,
+    name: 'Vagner Herdi',
+    title: '',
+    company: '',
+    image: vagnerImage,
+    linkedIn: 'https://www.linkedin.com/in/vagner-herdi/',
+    message: 'Tive a oportunidade de trabalhar com ele e destaco a sua proatividade, capacidade de comunicação e competência técnica. É alguém que sabe construir pontes, alinhar expectativas e trabalhar muito bem em equipa. Procura sempre compreender e analisar bem os problemas antes de avançar para a implementação, o que faz toda a diferença na qualidade das soluções. Sem dúvida, um profissional que acrescenta valor à equipa e aos projetos em que trabalha.',
+  },
 ];
 </script>
 
@@ -665,28 +555,37 @@ const testimonials = [
       ref="auroraRef"
       class="relative flex h-screen flex-col items-center justify-center overflow-hidden bg-background"
     >
-      <ShapeGrid
-        class="absolute inset-0 z-0"
-        shape="hexagon"
-        direction="diagonal"
-        :speed="0.5"
-        :square-size="40"
-        border-color="rgba(99, 102, 241, 0.22)"
-        hover-fill-color="rgba(129, 140, 248, 0.45)"
-        :hover-trail-amount="5"
-        fade-color="#05060f"
-      />
+      <div class="absolute inset-0 z-0" aria-hidden="true">
+        <DotField
+          :dot-radius="1.5"
+          :dot-spacing="14"
+          :bulge-strength="67"
+          :glow-radius="160"
+          gradient-from="rgba(129, 140, 248, 0.40)"
+          gradient-to="rgba(167, 139, 250, 0.22)"
+          glow-color="#05060f"
+        />
+      </div>
       <div class="flex flex-col items-center text-center gap-5 relative z-20 px-6">
-        <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white leading-none">
-          Gabriel<br>
-          <span class="bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-300 bg-clip-text text-transparent">
-            Lamas
-          </span>
+        <h1 class="w-[min(86vw,50rem)] h-[19vw] max-h-[170px] min-h-[72px]">
+          <TechText
+            :text="myName.replace(' ', '\u2009')"
+            :font-weight="900"
+            :font-size="160"
+            :letter-spacing="-0.06"
+            color="#f8fafc"
+            last-word-color="#818cf8"
+            accent-color="#a78bfa"
+            :reach="200"
+          />
         </h1>
 
-        <p class="text-base sm:text-xl text-slate-300 font-light max-w-md">
-          FullStack Developer · Vue.js &amp; C#/.NET
-        </p>
+        <div class="flex flex-col items-center gap-2">
+          <p class="text-lg sm:text-2xl text-slate-100 font-semibold">{{ myTitle }}</p>
+          <p class="text-sm sm:text-base text-slate-400 max-w-3xl leading-relaxed">
+            <span v-for="line in myTagline" :key="line" class="sm:block">{{ line }} </span>
+          </p>
+        </div>
 
         <div class="flex flex-wrap gap-3 justify-center mt-1">
           <a href="#projetos">
@@ -747,141 +646,75 @@ const testimonials = [
 
     <!-- ─── HABILIDADES ────────────────────────────── -->
     <section id="habilidades" class="py-20 md:py-32 bg-muted">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-12">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="text-center mb-14">
           <p class="section-label mb-3">02 — Stack</p>
           <h2 class="text-4xl font-black text-foreground">Habilidades Técnicas</h2>
           <p class="text-muted-foreground mt-3 text-sm max-w-lg mx-auto leading-relaxed">
-            Back-end em <span class="text-violet-300 font-semibold">.NET</span> e front-end com
-            <span class="text-rose-300 font-semibold">Angular</span>,
-            <span class="text-emerald-300 font-semibold">Vue</span> e
-            <span class="text-sky-300 font-semibold">React</span>, da arquitetura ao deploy na nuvem.
+            Do back-end em .NET ao deploy na nuvem.
           </p>
         </div>
 
-        <!-- Stack principal -->
-        <div v-reveal class="flex flex-wrap items-center justify-center gap-3 mb-14">
-          <span
-            v-for="tech in mainStack"
-            :key="tech.name"
-            class="main-chip flex items-center gap-2.5 px-5 py-3 rounded-xl border font-bold text-base text-foreground transition-all duration-300 hover:-translate-y-1 cursor-default"
-            :style="{ '--brand': tech.color }"
-          >
-            <i :class="[tech.devicon, 'text-2xl']" :style="{ color: tech.color }"></i>
-            {{ tech.name }}
-          </span>
-        </div>
-
-        <!-- Tecnologias por área -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <article
-            v-for="(group, index) in skillGroups"
+        <dl v-reveal class="border-t border-border">
+          <div
+            v-for="group in skillGroups"
             :key="group.title"
-            v-reveal="index"
-            :class="['flex flex-col p-6 rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-xl', groupAccent[group.accent]?.card]"
+            class="grid gap-2 md:grid-cols-[14rem_1fr] md:gap-10 py-4 border-b border-border"
           >
-            <div class="flex items-center gap-3 mb-2">
-              <span :class="['flex items-center justify-center w-10 h-10 rounded-xl flex-shrink-0', groupAccent[group.accent]?.box]">
-                <component :is="group.icon" class="w-5 h-5" aria-hidden="true" />
+            <dt class="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground md:pt-1">{{ group.title }}</dt>
+            <dd class="flex flex-wrap gap-x-5 gap-y-1.5 text-[15px]">
+              <span v-for="item in group.items" :key="item" class="skill-item">
+                <span class="skill-item__ghost" aria-hidden="true">{{ item }}</span>
+                <span class="skill-item__label">{{ item }}</span>
               </span>
-              <h3 class="text-lg font-bold text-foreground">{{ group.title }}</h3>
-            </div>
-            <p class="text-sm text-muted-foreground leading-relaxed mb-5">{{ group.description }}</p>
-            <ul class="flex flex-wrap gap-2">
-              <li
-                v-for="item in group.items"
-                :key="item.name"
-                class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/60 text-sm font-medium text-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20"
-              >
-                <i v-if="item.devicon" :class="[item.devicon, 'text-base leading-none']" :style="{ color: item.color }" aria-hidden="true"></i>
-                <component :is="item.lucide" v-else class="w-4 h-4" :style="{ color: item.color }" aria-hidden="true" />
-                {{ item.name }}
-              </li>
-            </ul>
-          </article>
-        </div>
-
-        <!-- Arquitetura & Práticas -->
-        <div class="mt-20">
-          <div class="text-center mb-10">
-            <h3 class="text-2xl font-black text-foreground">Arquitetura &amp; Práticas</h3>
-            <p class="text-sm text-muted-foreground mt-2">Os princípios por trás do código.</p>
+            </dd>
           </div>
+        </dl>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <article
-              v-for="(group, index) in practiceGroups"
-              :key="group.title"
-              v-reveal="index"
-              :class="['p-6 rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-xl', groupAccent[group.accent]?.card]"
-            >
-              <div class="flex items-center gap-3 mb-5">
-                <span :class="['flex items-center justify-center w-10 h-10 rounded-xl flex-shrink-0', groupAccent[group.accent]?.box]">
-                  <component :is="group.icon" class="w-5 h-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <h4 class="text-base font-bold text-foreground leading-tight">{{ group.title }}</h4>
-                  <p class="text-xs text-muted-foreground mt-0.5">{{ group.description }}</p>
-                </div>
-              </div>
-              <ul class="flex flex-wrap gap-2">
-                <li
-                  v-for="item in group.items"
-                  :key="item.name"
-                  :class="['flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-200 cursor-default', groupAccent[group.accent]?.pill]"
-                >
-                  <component :is="item.icon" class="w-3.5 h-3.5" aria-hidden="true" />
-                  {{ item.name }}
-                </li>
-              </ul>
-            </article>
+        <h3 class="mt-12 mb-1 text-lg font-bold text-foreground">Arquitetura e práticas</h3>
+        <p class="mb-5 text-sm text-muted-foreground">Base da pós em Arquitetura de Sistemas .NET (FIAP).</p>
+        <dl v-reveal class="border-t border-border">
+          <div
+            v-for="group in practiceGroups"
+            :key="group.title"
+            class="grid gap-2 md:grid-cols-[14rem_1fr] md:gap-10 py-4 border-b border-border"
+          >
+            <dt class="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground md:pt-1">{{ group.title }}</dt>
+            <dd class="flex flex-wrap gap-x-5 gap-y-1.5 text-[15px]">
+              <span v-for="item in group.items" :key="item" class="skill-item">
+                <span class="skill-item__ghost" aria-hidden="true">{{ item }}</span>
+                <span class="skill-item__label">{{ item }}</span>
+              </span>
+            </dd>
           </div>
-        </div>
+        </dl>
       </div>
     </section>
 
     <!-- ─── FORMAÇÃO ───────────────────────────────── -->
     <section id="formacao" class="py-20 md:py-32 bg-background">
-      <div class="max-w-3xl mx-auto px-6">
-        <div class="text-center mb-16">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-14">
           <p class="section-label mb-3">03 — Educação</p>
           <h2 class="text-4xl font-black text-foreground">Formação</h2>
         </div>
 
-        <!-- Timeline vertical -->
-        <ol class="relative">
-          <span aria-hidden="true" class="absolute left-3 -translate-x-1/2 top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/70 via-indigo-500/30 to-indigo-500/5"></span>
-
+        <ol class="border-t border-border">
           <li
             v-for="(edu, index) in educations"
             :key="edu.id"
             v-reveal="index"
-            class="relative pl-10 pb-5 last:pb-0"
+            class="grid gap-1 md:grid-cols-[12.5rem_1fr] md:gap-10 py-6 border-b border-border"
           >
-            <span
-              aria-hidden="true"
-              :class="edu.upcoming
-                ? 'w-3.5 h-3.5 bg-violet-400 shadow-[0_0_14px_rgba(167,139,250,0.7)]'
-                : 'w-3 h-3 bg-card border-2 border-indigo-400/70'"
-              class="absolute left-3 top-[25px] -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-background z-10"
-            ></span>
-
-            <div class="group p-5 rounded-2xl border border-border bg-card hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/5">
-              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                    {{ edu.type }}
-                  </span>
-                  <span v-if="edu.upcoming" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-violet-500/10 text-violet-300 border border-violet-500/20">
-                    Em andamento
-                  </span>
-                </div>
-                <span class="text-xs font-mono text-muted-foreground tabular-nums">{{ edu.duration }}</span>
-              </div>
-              <h3 class="text-base font-bold text-foreground mb-1 group-hover:text-indigo-300 transition-colors leading-snug">
-                {{ edu.course }}
-              </h3>
-              <p class="text-sm text-muted-foreground">{{ edu.institution }} · {{ edu.location }}</p>
+            <div class="md:pt-0.5">
+              <p class="text-sm font-medium text-slate-200 tabular-nums md:whitespace-nowrap">{{ edu.duration }}</p>
+              <p v-if="edu.upcoming" class="mt-1 font-mono text-xs text-emerald-400">Em andamento</p>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-foreground leading-snug">{{ edu.course }}</h3>
+              <p class="mt-1 text-sm text-muted-foreground">
+                {{ edu.type }} · {{ edu.institution }} · {{ edu.location }}
+              </p>
             </div>
           </li>
         </ol>
@@ -890,64 +723,41 @@ const testimonials = [
 
     <!-- ─── EXPERIÊNCIA ────────────────────────────── -->
     <section id="experiencia" class="py-20 md:py-32 bg-muted">
-      <div class="max-w-3xl mx-auto px-6">
-        <div class="text-center mb-16">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-14">
           <p class="section-label mb-3">04 — Carreira</p>
           <h2 class="text-4xl font-black text-foreground">Experiência Profissional</h2>
         </div>
 
-        <ol class="relative">
-          <span aria-hidden="true" class="absolute left-3 -translate-x-1/2 top-3 bottom-3 w-px bg-gradient-to-b from-indigo-500/70 via-indigo-500/30 to-indigo-500/5"></span>
-
+        <ol class="border-t border-border">
           <li
             v-for="(exp, index) in experiences"
             :key="exp.id"
             v-reveal="index"
-            class="relative pl-10 pb-5 last:pb-0"
+            class="grid gap-2 md:grid-cols-[12.5rem_1fr] md:gap-10 py-8 border-b border-border"
           >
-            <span
-              aria-hidden="true"
-              :class="exp.isCurrent
-                ? 'w-3.5 h-3.5 bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.8)]'
-                : 'w-3 h-3 bg-card border-2 border-indigo-400/50'"
-              class="absolute left-3 top-[31px] -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-muted z-10"
-            ></span>
-
-            <a :href="exp.companyLink" target="_blank" rel="noopener noreferrer" class="block group">
-              <div class="p-5 rounded-2xl border border-border bg-card hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-500/5">
-                <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-                  <h3 class="text-base font-bold text-foreground group-hover:text-indigo-300 transition-colors leading-snug">
-                    {{ exp.role }}
-                  </h3>
-                  <span
-                    v-if="exp.isCurrent"
-                    class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 font-semibold"
-                  >
-                    Atual
-                  </span>
-                </div>
-                <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
-                  <span class="font-semibold text-indigo-400">{{ exp.company }}</span>
-                  <span class="text-muted-foreground/50">·</span>
-                  <span class="text-muted-foreground">{{ exp.type }}</span>
-                </div>
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                  <span class="flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    {{ exp.duration }}
-                  </span>
-                  <span class="flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    {{ exp.location }}
-                  </span>
-                </div>
-              </div>
-            </a>
+            <div class="md:pt-0.5">
+              <p class="text-sm font-medium text-slate-200 tabular-nums md:whitespace-nowrap">
+                {{ formatMonth(exp.start) }} — <span :class="exp.end ? '' : 'text-emerald-400'">{{ exp.end ? formatMonth(exp.end) : 'Atual' }}</span>
+              </p>
+              <p class="mt-1 font-mono text-xs text-muted-foreground">{{ formatDuration(exp.start, exp.end) }}</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-foreground leading-snug">{{ exp.role }}</h3>
+              <p class="mt-1 text-sm text-muted-foreground">
+                <a
+                  :href="exp.companyLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-semibold text-indigo-400 hover:text-indigo-300 underline-offset-4 hover:underline"
+                >{{ exp.company }}</a>
+                · {{ exp.type }} · {{ exp.location }}
+              </p>
+              <p v-if="exp.summary" class="mt-4 text-[15px] text-slate-300 leading-relaxed max-w-2xl">{{ exp.summary }}</p>
+              <ul v-if="exp.stack" class="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-muted-foreground">
+                <li v-for="tech in exp.stack" :key="tech" class="whitespace-nowrap">{{ tech }}</li>
+              </ul>
+            </div>
           </li>
         </ol>
       </div>
@@ -983,12 +793,13 @@ const testimonials = [
             :class="['group h-full flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl', projectAccent[project.accent]?.hover]"
           >
             <!-- Thumbnail -->
-            <a
-              :href="project.videoUrl ?? project.siteUrl ?? project.repoUrl"
+            <component
+              :is="project.videoUrl || project.siteUrl || project.repoUrl ? 'a' : 'div'"
+              :href="project.videoUrl ?? project.siteUrl ?? project.repoUrl ?? undefined"
               target="_blank"
               rel="noopener noreferrer"
               class="relative block aspect-video overflow-hidden bg-muted"
-              :aria-label="project.videoUrl ? `Assistir vídeo: ${project.title}` : project.siteUrl ? `Abrir site: ${project.title}` : `Ver repositório: ${project.title}`"
+              :aria-label="project.videoUrl ? `Assistir vídeo: ${project.title}` : project.siteUrl ? `Abrir site: ${project.title}` : project.repoUrl ? `Ver repositório: ${project.title}` : undefined"
             >
               <img
                 :src="project.thumbnail"
@@ -1011,7 +822,7 @@ const testimonials = [
                 <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
                 Em andamento
               </span>
-            </a>
+            </component>
 
             <!-- Conteúdo -->
             <div class="flex flex-col flex-1 p-6">
@@ -1063,6 +874,7 @@ const testimonials = [
                   Ver site
                 </a>
                 <a
+                  v-if="project.repoUrl"
                   :href="project.repoUrl"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1071,6 +883,15 @@ const testimonials = [
                   <i class="devicon-github-original text-base"></i>
                   Código
                 </a>
+                <span
+                  v-else
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-800/60 text-white/50 font-semibold text-sm cursor-not-allowed"
+                  title="Repositório em breve"
+                  aria-disabled="true"
+                >
+                  <i class="devicon-github-original text-base"></i>
+                  Código
+                </span>
               </div>
             </div>
           </article>
@@ -1113,9 +934,9 @@ const testimonials = [
                       </Avatar>
                       <div class="flex-1 min-w-0">
                         <p class="font-bold text-foreground text-sm group-hover:text-indigo-300 transition-colors">{{ testimonial.name }}</p>
-                        <p class="text-xs text-muted-foreground">
+                        <p v-if="testimonial.title || testimonial.company" class="text-xs text-muted-foreground">
                           {{ testimonial.title }}
-                          <span class="text-indigo-400 font-medium">· {{ testimonial.company }}</span>
+                          <span v-if="testimonial.company" class="text-indigo-400 font-medium"><template v-if="testimonial.title">· </template>{{ testimonial.company }}</span>
                         </p>
                       </div>
                       <i class="devicon-linkedin-plain text-blue-400 text-xl opacity-40 group-hover:opacity-100 transition-opacity flex-shrink-0"></i>
