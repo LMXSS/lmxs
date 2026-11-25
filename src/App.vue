@@ -336,7 +336,7 @@ const techChallengeProjects: Project[] = [
     thumbnail: '/projetos/tech-challenge-fase-4.jpg',
     tags: ['Azure AKS', 'ACR', 'Kubernetes', 'Elasticsearch', 'MongoDB', 'Redis'],
     repoUrl: 'https://github.com/LMXSS/TC4',
-    videoUrl: null,
+    videoUrl: 'https://youtu.be/BUtwVJNfvFY',
     videoSoon: true,
     inProgress: true,
     accent: 'blue',
